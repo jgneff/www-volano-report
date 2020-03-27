@@ -1,0 +1,13 @@
+# Build with "tj -p Mark.tj".
+
+target=Mark
+nofeedback=true
+tjdb=Tjdb.mark
+b-disable-tjlib=true
+root=COM.volano.Mark
+include=COM.volano.*
+invisible=COM.volano.KeepAlive \
+	COM.volano.NTService \
+	COM.volano.Shutdown \
+	COM.volano.Status
+

@@ -1,0 +1,13 @@
+body {
+    font-family: Georgia, serif;
+    background: white;
+    color: black;
+    margin-left: 5%;
+    margin-right: 5%;
+}
+pre {
+    margin-left: 5%;
+}
+p.caption {
+    margin-top: 0px;
+}

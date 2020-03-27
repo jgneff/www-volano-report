@@ -1,0 +1,4 @@
+target=Mark
+root=COM.volano.Mark
+b-heap-min=8388608
+nofeedback=true

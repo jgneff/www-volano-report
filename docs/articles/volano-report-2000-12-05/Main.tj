@@ -1,0 +1,13 @@
+target=Main
+root=COM.volano.Main
+b-jdk=2
+b-heap-min=8388608
+b-heap-max=268435456
+nofeedback=true
+include=\
+ java.text.resources.LocaleElements \
+ java.text.resources.LocaleElements_en \
+ java.text.resources.DateFormatZoneData \
+ java.text.resources.DateFormatZoneData_en \
+ java.util.ListResourceBundle \
+ sun.net.www.protocol.http.Handler

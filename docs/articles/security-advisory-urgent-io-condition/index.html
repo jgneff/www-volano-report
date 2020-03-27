@@ -1,0 +1,293 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="description" content="Some Java virtual machine implementations are vulnerable to a denial of service attack in which remote clients can kill a Java server process by sending it urgent data.">
+<link rel="canonical" href="http://www.volano.com/articles/security-advisory-urgent-io-condition/">
+<link type="text/css" rel="stylesheet" href="index.css" />
+<title>Security Advisory: Urgent I/O Condition</title>
+</head>
+<body>
+
+<h1>Security Advisory: Urgent I/O Condition</h1>
+
+<p>
+Last updated on January 25, 2002.
+A complete history can be found at the end of this page.
+Special thanks to Juergen Kreileder from the Blackdown Java-Linux Team and Joakim Dahlstedt from Appeal Virtual Machines for making their fixes available so quickly.
+</p>
+
+<h2>Overview</h2>
+
+<p>
+Some Java virtual machine implementations are vulnerable to a denial of service attack in which remote clients can kill a Java server process by sending it urgent data.
+This vulnerability will be documented by the <a href="http://www.cert.org/">CERT Coordination Center</a> as Vulnerability Note VU#998279.
+</p>
+
+<h2>Description</h2>
+
+<p>
+A remote attacker can bring down or hang a Java process running on a vulnerable Java virtual machine by sending it urgent data on a network connection.
+The following client and server programs can be used to simulate the attack:
+</p>
+
+<dl>
+<dt><a href="../../files/2002/sigurg/Client.java">Client.java</a></dt>
+<dd>a Java client that simulates the attack.</dd>
+<dt><a href="../../files/2002/sigurg/Server.java">Server.java</a></dt>
+<dd>a Java echo server.</dd>
+</dl>
+
+<p>
+<b>Note:</b> Since Java does not support urgent data until version 1.4, you need to compile and execute the client side with Java version 1.4 or later.
+The server side requires only Java version 1.0.2 or later to compile and run.
+I have no reason to believe the actual attack program is written in Java.
+In fact, the actual attack program seems to be more effective than the simulation programs I have written.
+</p>
+
+<p>
+I ran the client side of the test on a 500-MHz Intel Pentium III machine running Microsoft Windows 2000 Service Pack 2 with <a href="http://java.sun.com/j2se/1.4/">Java 2 SDK, Standard Edition, version 1.4 Beta 3</a>:
+</p>
+
+<pre>
+java version "1.4.0-beta3"
+Java(TM) 2 Runtime Environment, Standard Edition (build 1.4.0-beta3-b84)
+Java HotSpot(TM) Client VM (build 1.4.0-beta3-b84, mixed mode)
+</pre>
+
+<p>
+I ran the server side of the test on a 200-MHz Intel Pentium Pro machine running an up-to-date version of Red Hat Linux 7.1 with Linux kernel version 2.4.9 and Glibc version 2.2.4.
+I used the following shell script to start the server side with various Java virtual machines:
+</p>
+
+<dl>
+<dt><a href="run.sh">run.sh</a></dt>
+<dd>the server startup script.</dd>
+</dl>
+
+<p>
+The two machines are connected by a 100-Mbps switched Ethernet network.
+The TowerJ project file is available below:
+</p>
+
+<dl>
+<dt><a href="Project.tj">Project.tj</a></dt>
+<dd>the TowerJ project file.</dd>
+</dl>
+
+<p>
+I ran the following command on the server side after removing the comment character <code>("#")</code> for the Java platform to be tested:
+</p>
+
+<pre>
+./run.sh
+</pre>
+
+<p>
+I ran the following command on the client side, where <code>ppro</code> is the host name of the machine running the server side:
+</p>
+
+<pre>
+c:\j2sdk1.4.0-beta3\bin\java Client -h ppro -c 100000
+</pre>
+
+<p>
+See the file <a href="output.txt"><code>output.txt</code></a> for a log of the output from the tests.
+</p>
+
+<p>
+When the Java virtual machine survives the attack, you should see messages like the following on the server side after all 100,000 messages and urgent data bytes are sent:
+</p>
+
+<pre>
+Creating server socket on port 8000 ...
+Accepting connections ...
+Connection is from 192.168.0.1 (dev.sf.volano.net).
+Echoing messages from client ...
+Connection closed by client.
+</pre>
+
+<p>
+When the Java virtual machine fails to survive the attack, you should see messages like the following on the server side before all 100,000 messages and urgent data bytes are sent:
+</p>
+
+<pre>
+Creating server socket on port 8000 ...
+Accepting connections ...
+Connection is from 192.168.0.1 (dev.sf.volano.net).
+Echoing messages from client ...
+./run.sh: line 4:  3747 Urgent I/O condition
+    /usr/java/jdk1.3.1/bin/java -classic -showversion Server
+</pre>
+
+<p>
+With this simulation, sometimes the Java server process terminates immediately, after just a few messages from the client, while other times it takes as many as 60,000 messages from the client before the server side is killed.
+</p>
+
+<h2>Impact</h2>
+
+<p>
+The Java server process terminates with exit value 151 after receiving a <code>SIGURG</code> signal with value 23.
+(The process exit value is the signal value plus 128.)
+The message "Urgent I/O condition" may be printed to the console when the process terminates, especially when running the process in the foreground.
+In the case of Appeal JRockit, the server side hangs with no CPU usage instead of terminating execution.
+</p>
+
+<h2>Solution</h2>
+
+<p>
+Since the Java version 1.3 server application is never aware of the urgent data, the only solution is to switch to a Java virtual machine implementation which is not vulnerable to the attack or apply the available fixes to those which are vulnerable.
+</p>
+
+<h2>Products affected</h2>
+
+<p>
+The following Java virtual machines are vulnerable to the attack in my tests.
+</p>
+
+<h3>Red Hat Linux 7.1 (Linux 2.4.9, Glibc 2.2.4)</h3>
+
+<dl>
+<dt>Appeal JRockit Virtual Machine 3.0.0 (build 3.0.0-dax.appeal.se-20011120-1610)</dt>
+<dd>
+A <a href="http://www.jrockit.com/download/index.html">fix is available</a> in the December 17, 2001, update of JRockit version 3.0.2 or later.
+</dd>
+<dt>Blackdown Classic VM 1.3.1 (build Blackdown-1.3.1-FCS, green threads, nojit)</dt>
+<dd>
+A <a href="http://www.blackdown.org/java-linux/java2-status/jdk1.3-status.html">fix is available</a> in the January 16, 2002, update of Blackdown J2SE version 1.3.1-02a-FCS or later.
+</dd>
+<dt>Sun Classic VM 1.3.1 (build 1.3.1-b24, green threads, nojit)</dt>
+<dd>
+A fix will be available with release 1.3.1_03 at the end of March 2002.
+Sun recommends that sites using Sun's version 1.3.1 Classic VM either switch to the HotSpot VM, wait for the fix in release 1.3.1_03, or switch to version 1.4 when it's available.
+Our testing here at Volano indicates that those using Sun's version 1.3.1 Classic VM should be able to switch to the Blackdown Classic VM version 1.3.1-02a-FCS as a solution.
+The Blackdown Classic VM is based on the same code as Sun's but contains other <a href="http://developer.java.sun.com/developer/bugParade/bugs/4427986.html">important fixes</a> not found in Sun's implementation.
+</dd>
+</dl>
+
+<p>
+There may be other Java platforms which are vulnerable to the attack.
+</p>
+
+<h2>Products unaffected</h2>
+
+<p>
+The following Java virtual machines are not vulnerable to the attack in my tests.
+</p>
+
+<h3>Red Hat Linux 7.1 (Linux 2.4.9, Glibc 2.2.4)</h3>
+
+<dl>
+<dt>Tower TowerJ Compiler (version 3.8.1.0 (Tower JRE 1.3.1) x86-linux)</dt>
+<dd>
+Available as a solution to the vulnerability and supports thousands of simultaneous connections, but experiences an intermittent <code>SIGSEGV</code> segmentation violation (signal value 11) about once every two or three days.
+Tower has reproduced the segmentation violation and has core files from the customer to use in debugging.
+</dd>
+<dt>Appeal JRockit Virtual Machine (build 3.0.2-dax.appeal.se-20011217-1738)</dt>
+<dd>
+Available as a solution to the vulnerability and supports thousands of simultaneous connections.
+</dd>
+<dt>Blackdown Classic VM (build Blackdown-1.3.1-02a-FCS, green threads, nojit)</dt>
+<dd>
+Available as a solution to the vulnerability and supports thousands of simultaneous connections.
+</dd>
+<dt>Blackdown Java HotSpot(TM) Server VM (build Blackdown-1.3.1-FCS, mixed mode)</dt>
+<dd>
+May not be appropriate as a solution to the vulnerability since it supports only a few hundred simultaneous connections.
+</dd>
+<dt>Sun Java HotSpot(TM) Server VM (build 1.3.1-b24, mixed mode)</dt>
+<dd>
+May not be appropriate as a solution to the vulnerability since it supports only a few hundred simultaneous connections.
+</dd>
+<dt>IBM Classic VM (build 1.3.0, J2RE 1.3.0 IBM build cx130-20010925 (JIT enabled: jitc))</dt>
+<dd>
+May not be appropriate as a solution to the vulnerability since it supports only a few hundred simultaneous connections.
+</dd>
+</dl>
+
+<p>
+There may be other Java platforms which are not vulnerable to the attack.
+See <a href="http://www.volano.org/articles/volano-report-2001-12-27/index.html#figure2">Figure 2 in the Volano Report</a> for the network connection capacity of these Java platforms.
+</p>
+
+<h2>History</h2>
+
+<dl>
+<dt>November 28, 2001</dt>
+<dd>
+Attack first reported to Volano Software.
+</dd>
+<dt>December 4, 2001</dt>
+<dd>
+Volano reproduced the problem with client and server test programs which simulate the attack.
+</dd>
+<dt>December 7, 2001</dt>
+<dd>
+Provided a TowerJ executable for the customer as the only viable alternative to the vulnerable Blackdown version 1.3.1 Classic VM (green threads, nojit).
+</dd>
+<dt>December 13, 2001</dt>
+<dd>
+Customer went live with the TowerJ executable, which seems to have worked as a solution against the attacks.
+</dd>
+<dt>December 15, 2001</dt>
+<dd>
+Released to the vendors (<a href="http://sunsolve.sun.com/pub-cgi/show.pl?target=security/sec">Sun Security Coordination Team</a>, <a href="http://www.blackdown.org/java-linux/aboutus.html">The Blackdown Project</a>, and <a href="http://www.jrockit.com/about/support/support.html">Appeal Virtual Machines</a>) and to the <a href="http://www.cert.org/">CERT&reg; Coordination Center</a>.
+</dd>
+<dt>December 16, 2001</dt>
+<dd>
+CERT assigned reference number VU#998279.
+</dd>
+<dt>December 17, 2001</dt>
+<dd>
+Appeal Virtual Machines reproduced the problem and fixed it.
+The fix will be made available on their Web site as JRockit version 3.0.2 starting tomorrow.
+</dd>
+<dt>December 18, 2001</dt>
+<dd>
+Sun Microsystems reproduced the problem.
+</dd>
+<dt>December 20, 2001</dt>
+<dd>
+Verified the fix in JRockit version 3.0.2 (build 3.0.2-dax.appeal.se-20011217-1738) available from the <a href="http://www.jrockit.com/download/index.html">Appeal Web site</a>.
+</dd>
+<dt>December 25, 2001</dt>
+<dd>
+The Blackdown Team reproduced the problem and hope to have a fix available soon after the holidays.
+</dd>
+<dt>January 7, 2001</dt>
+<dd>
+Sun Microsystems confirmed that the Java 2 version 1.2.2 and 1.3.1 Classic VMs on Linux are both vulnerable.
+They have a fix for the problem and are working on plans to make it available.
+</dd>
+<dt>January 11, 2002</dt>
+<dd>
+Received a fix from Blackdown as Java version 1.3.1-02a-FCS.
+</dd>
+<dt>January 13, 2002</dt>
+<dd>
+Verified that the fix from Blackdown solves the problem in my tests.
+</dd>
+<dt>January 16, 2002</dt>
+<dd>
+Blackdown posted the fix for Intel processors as version 1.3.1-02a-FCS, available for download from <a href="ftp://ftp.tux.org:/java/JDK-1.3.1/i386/FCS-02a"><code>ftp://ftp.tux.org:/java/JDK-1.3.1/i386/FCS-02a</code></a>.
+</dd>
+<dt>January 19, 2002</dt>
+<dd>
+Sun Microsystems says their fix for the problem will be included in the Java 1.2.2_012 release available at the end of April 2002 and the Java 1.3.1_03 release available at the end of March 2002.
+</dd>
+<dt>January 21, 2002</dt>
+<dd>
+Proposed publication date from CERT.
+</dd>
+<dt>January 23, 2002</dt>
+<dd>
+Proposed publication from Sun Microsystems.
+</dd>
+<dt>January 25, 2002</dt>
+<dd>
+Released to the public.
+</dd>
+</dl>
+
+</body>
+</html>

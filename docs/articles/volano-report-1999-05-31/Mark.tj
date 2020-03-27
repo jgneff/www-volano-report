@@ -1,0 +1,5 @@
+root=COM.volano.Mark
+b-disable-interpreter=true
+b-disable-tjlib=true
+b-heap-min=8388608
+nofeedback=true

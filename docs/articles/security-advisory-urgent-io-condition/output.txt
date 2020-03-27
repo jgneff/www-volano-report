@@ -1,0 +1,169 @@
+Using Client and Server versions "14 Dec 2001".
+The TowerJ executable expires February 6, 2002.
+
+Server:
+  ./run.sh
+Client:
+  c:\j2sdk1.4.0-beta3\bin\java Client -h ppro -c 100000
+
+Sun 1.3.1 Classic VM (green threads, nojit)
+-------------------------------------------
+java version "1.3.1"
+Java(TM) 2 Runtime Environment, Standard Edition (build 1.3.1-b24)
+Classic VM (build 1.3.1-b24, green threads, nojit)
+
+Server:
+Creating server socket on port 8000 ...
+Accepting connections ...
+Connection is from 192.168.0.1 (dev.sf.volano.net).
+Echoing messages from client ...
+./run.sh: line 4:  3747 Urgent I/O condition    /usr/java/jdk1.3.1/bin/java -classic -showversion Server
+
+Client:
+58000 messages so far ...
+59000 messages so far ...
+60000 messages so far ...
+Error in client (java.net.SocketException: Connection reset by peer: JVM_recv in socket input stream read).
+
+Sun 1.3.1 HotSpot Server VM
+---------------------------
+java version "1.3.1"
+Java(TM) 2 Runtime Environment, Standard Edition (build 1.3.1-b24)
+Java HotSpot(TM) Server VM (build 1.3.1-b24, mixed mode)
+
+Server:
+Creating server socket on port 8000 ...
+Accepting connections ...
+Connection is from 192.168.0.1 (dev.sf.volano.net).
+Echoing messages from client ...
+Connection closed by client.
+
+Client:
+98000 messages so far ...
+99000 messages so far ...
+100000 messages so far ...
+Count      = 100000 messages.
+Total time = 2000.216 seconds.
+Throughput = 49.994602 messages per second.
+
+Blackdown 1.3.1 Classic VM (green threads, nojit)
+-------------------------------------------------
+java version "1.3.1"
+Java(TM) 2 Runtime Environment, Standard Edition (build Blackdown-1.3.1-FCS)
+Classic VM (build Blackdown-1.3.1-FCS, green threads, nojit)
+
+Server:
+Creating server socket on port 8000 ...
+Accepting connections ...
+Connection is from 192.168.0.1 (dev.sf.volano.net).
+Echoing messages from client ...
+./run.sh: line 10:  3851 Urgent I/O condition    /usr/local/j2sdk1.3.1/bin/java -green -showversion Server
+
+Client:
+Connecting to server ...
+Sending messages to server ...
+1000 messages so far ...
+Error in client (java.net.SocketException: Connection reset by peer: JVM_recv in socket input stream read).
+
+Blackdown 1.3.1 HotSpot Server VM
+---------------------------------
+java version "1.3.1"
+Java(TM) 2 Runtime Environment, Standard Edition (build Blackdown-1.3.1-FCS)
+Java HotSpot(TM) Server VM (build Blackdown-1.3.1-FCS, mixed mode)
+
+Server:
+Creating server socket on port 8000 ...
+Accepting connections ...
+Connection is from 192.168.0.1 (dev.sf.volano.net).
+Echoing messages from client ...
+Connection closed by client.
+
+Client:
+98000 messages so far ...
+99000 messages so far ...
+100000 messages so far ...
+Count      = 100000 messages.
+Total time = 2033.324 seconds.
+Throughput = 49.180553 messages per second.
+
+Appeal JRockit 3.0.0
+--------------------
+Hangs with no CPU usage and no network activity after 9th message, shown
+below with the "-v" verbose option on both sides.  JRockit works fine
+without the urgent data (at 2212.634 messages per second).
+
+java version 1.3.1_dax.appeal.se-20011120-1857
+Java(TM) 2 Runtime Environment, Standard Edition (build "1.3.1_dax.appeal.se-20011120-1857")
+JRockit Virtual Machine (build 3.0.0-dax.appeal.se-20011120-1610)
+[JRockit] Detected the new and improved pthreads - no need to patch
+WARNING: This copy of JRockit will expire in 20 days.
+JRockit build 3.0.0-dax.appeal.se-20011120-1610, Thin Threads, Generational Concurrent Garbage Collector, started.
+
+Server:
+Creating server socket on port 8000 ...
+Accepting connections ...
+Connection is from 192.168.0.1 (dev.sf.volano.net).
+Echoing messages from client ...
+0 This is message 1 from the client.
+0 This is message 2 from the client.
+0 This is message 3 from the client.
+0 This is message 4 from the client.
+0 This is message 5 from the client.
+0 This is message 6 from the client.
+0 This is message 7 from the client.
+0 This is message 8 from the client.
+0 This is message 9 from the client.
+
+Client:
+Connecting to server ...
+Sending messages to server ...
+This is message 1 from the client.
+This is message 2 from the client.
+This is message 3 from the client.
+This is message 4 from the client.
+This is message 5 from the client.
+This is message 6 from the client.
+This is message 7 from the client.
+This is message 8 from the client.
+This is message 9 from the client.
+
+Tower TowerJ 3.8.1
+------------------
+TowerJ Compiler (version 3.8.1.0 (Tower JRE 1.3.1) x86-linux)
+Copyright (c) 2001 Tower Technology Corporation. All rights reserved.
+
+Server:
+Creating server socket on port 8000 ...
+Accepting connections ...
+Connection is from 192.168.0.1 (dev.sf.volano.net).
+Echoing messages from client ...
+Connection closed by client.
+
+Client:
+98000 messages so far ...
+99000 messages so far ...
+100000 messages so far ...
+Count      = 100000 messages.
+Total time = 2002.94 seconds.
+Throughput = 49.92661 messages per second.
+
+IBM 1.3.0 Classic VM
+--------------------
+java version "1.3.0"
+Java(TM) 2 Runtime Environment, Standard Edition (build 1.3.0)
+Classic VM (build 1.3.0, J2RE 1.3.0 IBM build cx130-20010925 (JIT enabled: jitc))
+
+Server:
+Creating server socket on port 8000 ...
+Accepting connections ...
+Connection is from 192.168.0.1 (dev.sf.volano.net).
+Echoing messages from client ...
+Connection closed by client.
+
+Client:
+98000 messages so far ...
+99000 messages so far ...
+100000 messages so far ...
+Count      = 100000 messages.
+Total time = 2000.726 seconds.
+Throughput = 49.981857 messages per second.

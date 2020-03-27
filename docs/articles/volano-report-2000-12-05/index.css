@@ -1,0 +1,40 @@
+body {
+    font-family: Georgia, serif;
+    background: white;
+    color: black;
+    margin-left: 5%;
+    margin-right: 5%;
+}
+th {
+    font-family: Verdana, sans-serif;
+}
+td {
+    font-family: Verdana, sans-serif;
+    font-size: smaller;
+}
+pre {
+    margin-left: 5%;
+}
+p.caption {
+    margin-top: 0px;
+}
+td.freebsd {
+    color: black;
+    background: rgb(51,204,51);        /* limegreen rgb(50,205,50) #32CD32 */
+}
+td.linux {
+    color: black;
+    background: rgb(255,153,0);        /* orange rgb(255,165,0) #FFA500 */
+}
+td.solaris {
+    color: black;
+    background: rgb(255,153,255);            /* violet rgb(238,130,238) #EE82EE */
+}
+td.windows {
+    color: black;
+    background: rgb(0,204,255);        /* deepskyblue rgb(0,191,255) #00BFFF */
+}
+span.error {
+    color: red;
+    background: white;
+}

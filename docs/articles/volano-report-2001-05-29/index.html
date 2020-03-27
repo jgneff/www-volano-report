@@ -1,0 +1,312 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html lang="en">
+<head>
+<title>The Volano Report</title>
+<meta name="description" content="VolanoMark benchmark results">
+<meta name="keywords"    content="VolanoMark, Volano, Java, benchmark">
+<link rev="made" href="mailto:john@volano.com">
+<link type="text/css" rel="stylesheet" href="index.css">
+</head>
+
+<body>
+<img src="volano-small.gif" alt="Volano" align="left" width="75" height="45" border="0" hspace="5">
+<h1>The Volano Report</h1>
+<br clear="all">
+<ul>
+<li><i>Last updated on May 29, 2001. The most recent Volano Report is
+available <a href="../../reports.html">here</a>.</i>
+</ul>
+
+<p>For background information on VolanoMark<sup>&#8482;</sup> and its
+download locations, please see our
+<a href="http://www.volano.com/benchmarks.html">Benchmarks</a> page. Since the server side of
+the VolanoMark benchmark is our VolanoChat server, these test results
+help our customers choose the best Java virtual machine for their
+environment. VolanoMark is a pure Java server benchmark characterized by
+long-lasting network connections and high thread counts. The VolanoMark
+benchmark creates client connections in groups of 20 and measures the
+time required by the clients to take turns broadcasting a set of
+messages to the group. At the end of the test, it reports a score as the
+average number of messages transferred by the server per second. All
+tests ran identical copies of VolanoMark 2.1.2 on identical
+hardware.</p>
+<p><a href="http://developer.java.sun.com/developer/bugParade/bugs/4075058.html">Bug Id 4075058</a>,
+"java.io: Add support for non-blocking I/O," explains why you need lots
+of threads to handle dedicated connections to a pure Java server.
+<a href="http://java.sun.com/aboutJava/communityprocess/jsr/jsr_051_ioapis.html">JSR 51</a>,
+"New I/O APIs for the Java Platform," explains how Sun plans to change that.</p>
+
+<h2>Performance</h2>
+<p>The performance test was executed with the following commands on a
+local loopback connection, using the heap size options shown below where
+possible. The operating system was rebooted before each set of tests for
+a particular Java virtual machine. The client benchmark ran four times,
+with the final score as the average of the last three results. The
+server side was not restarted before each run of the client benchmark.
+</p>
+<dl>
+<dt>Server</dt>
+<dd><code>java -Xms8m -Xmx64m COM.volano.Main</code></dd>
+<dt>Client</dt>
+<dd><code>java -Xms8m -Xmx64m COM.volano.Mark -count 100</code></dd>
+</dl>
+<div align="center">
+<img src="loopback.gif" border="0" width="600" height="500" alt="">
+</div>
+<p class="caption"><b>Figure 1.</b> VolanoMark 2.1.2 performance test
+showing the throughput in messages per second with 200 concurrent local
+loopback connections. Bigger numbers are faster.
+<a href="loopback.txt">Click here</a> for details.</p>
+
+<h2>Network Scalability</h2>
+<p>The network scalability test was executed with the following commands
+over a 100-Mbps Ethernet cross-over cable connection, using the heap and
+stack size options shown below where possible. The operating systems on
+both sides were rebooted before each set of tests for a particular Java
+virtual machine. The VolanoMark server was not restarted between client
+test runs.</p>
+<dl>
+<dt>Server</dt>
+<dd><code>java -Xms8m -Xmx256m -Xss32k COM.volano.Main</code></dd>
+<dt>Client</dt>
+<dd>
+<code>java -Xms64m -Xmx256m -Xss64k COM.volano.Mark -host xxx.yyy.zzz -rooms 50</code><br>
+<code>java -Xms64m -Xmx256m -Xss64k COM.volano.Mark -host xxx.yyy.zzz -rooms 100</code><br>
+<code>...</code><br>
+<code>java -Xms64m -Xmx256m -Xss64k COM.volano.Mark -host xxx.yyy.zzz -rooms 300</code><br>
+</dd>
+</dl>
+<div align="center">
+<img src="network.gif" border="0" width="600" height="500" alt="">
+</div>
+<p class="caption"><b>Figure 2.</b> VolanoMark 2.1.2 network scalability
+test showing the maximum number of concurrent network connections
+achieved during the test. Bigger numbers indicate greater network
+scalability. The order of the Java virtual machines is preserved from
+Figure 1. <a href="network.txt">Click here</a> for details.</p>
+
+<h2>Environment</h2>
+
+<h3>Hardware</h3>
+
+<h4>Server</h4>
+<p>The server machine under test is a
+<a href="http://support.dell.com/us/en/home.asp?st=B21HJ">Dell OptiPlex
+GXpro</a> with a 200-MHz Intel Pentium Pro processor, 256 kilobytes L2
+cache, 320 megabytes ECC EDO RAM, a 3Com EtherLink XL 10/100 PCI TX NIC
+(3C905B-TX), and Phoenix ROM BIOS PLUS Version 1.10 A10.</p>
+<p>Note that this is not a hardware test but rather a test of the
+relative performance and network scalability of these Java platforms
+running VolanoMark. We continue to use a 200 MHz Intel Pentium Pro so
+that you can compare these results with our previous Volano Reports and
+so that we can drive the system with a much more powerful processor on
+the client side of the network scalability tests.</p>
+<p>With the exception of Sun 1.3.1 on Solaris, the maximum number of
+concurrent connections shown in Figure 2 is due to architectural
+constraints rather than processor speed or the actual amount of memory
+on the system.</p>
+
+<h4>Client</h4>
+<p>The client side driving the network tests is a
+<a href="http://support.dell.com/us/en/home.asp?st=CI2GR">Dell OptiPlex
+GX1</a> with a 500-MHz Intel Pentium III processor, 512 kilobytes L2
+cache, 384 megabytes ECC SDRAM, a 3Com EtherLink XL 10/100 PCI TX NIC
+(3C905B-TX), and Dell OptiPlex GX1 500L+ BIOS Revision A08. The client
+test driver was executed under the Sun J2SE 1.3.0_02 HotSpot Server VM
+using Solaris 8 (6/00).</p>
+<p>Note that the client side must be a much more powerful system than
+the server side since it simulates up to 6,000 clients on just one
+machine and must drive the server side at its maximum speed.</p>
+
+<h3>Software</h3>
+
+<h4>Test Scripts</h4>
+
+<h5>Loopback performance tests</h5>
+<p>The following Unix shell scripts and Windows batch files were used
+for the loopback performance tests with 200 concurrent connections. For
+a sleep function, the Windows batch files used
+<a href="sleep.java">sleep.java</a>.</p>
+<dl>
+<dt><a href="server.sh">server.sh</a></dt>
+<dd>UNIX server side</dd>
+<dt><a href="client.sh">client.sh</a></dt>
+<dd>UNIX client side</dd>
+<dt><a href="server.bat">server.bat</a></dt>
+<dd>Windows server side</dd>
+<dt><a href="client.bat">client.bat</a></dt>
+<dd>Windows client side</dd>
+</dl>
+
+<h5>Network Scalability Tests</h5>
+<p>The following Unix shell scripts and Windows batch files were used
+for the network scalability tests with 1,000 through 6,000 concurrent
+connections.</p>
+<dl>
+<dt><a href="netserver.sh">netserver.sh</a></dt>
+<dd>UNIX server side</dd>
+<dt><a href="netserver.bat">netserver.bat</a></dt>
+<dd>Windows server side</dd>
+<dt><a href="netclient.sh">netclient.sh</a></dt>
+<dd>Client side on Solaris 8 (6/00)</dd>
+</dl>
+
+<h4>Operating Systems</h4>
+
+<h5>FreeBSD 4.2-RELEASE</h5>
+<pre>
+FreeBSD ppro 4.2-RELEASE FreeBSD 4.2-RELEASE #0: Mon Nov 20 13:02:55 GMT 2000
+  jkh@bento.FreeBSD.org:/usr/src/sys/compile/GENERIC  i386
+</pre>
+<p>Contents of <code>/etc/sysctl.conf</code>:</p>
+<pre>
+# Increase file descriptor limits from their defaults of 1064.
+kern.maxfiles=16384             # System-wide limit
+kern.maxfilesperproc=8192       # Per-process limit
+</pre>
+
+<h5>Microsoft Windows 2000 Professional</h5>
+<pre>
+Microsoft Windows 2000 Service Pack 2 [Version 5.00.2195]
+</pre>
+<p>Optimized performance for background services (rather than
+applications) under Start, Settings, Control Panel, System, Advanced,
+Performance Options, Application response. This change specifies that
+all programs receive equal amounts of processor resources.</p>
+
+<h5>Red Hat Linux 7.1</h5>
+<p>Applied all updates as of May 28, 2001, using Red Hat's
+<code>up2date</code> program.
+<pre>
+Red Hat Linux release 7.1 (Seawolf)
+Linux ppro.sf.volano.net 2.4.2-2 #1 Sun Apr 8 20:41:30 EDT 2001 i686 unknown
+glibc-2.2.2-10
+</pre>
+<p>Added to <code>/etc/pam.d/login</code>:</p>
+<pre>
+session    required     /lib/security/pam_limits.so
+</pre>
+<p>Added to <code>/etc/security/limits.conf</code>:</p>
+<pre>
+*               soft    nofile          1024
+*               hard    nofile          8192
+</pre>
+
+<h5>Sun Solaris 8 (6/00)</h5>
+<p>Added latest recommended patch cluster dated May 23, 2001.</p>
+<pre>
+Solaris 8 6/00 s28x_u1wos_08 INTEL
+SunOS ppro 5.8 Generic_108529-08 i86pc i386 i86pc
+</pre>
+<p>Added to <code>/etc/system</code>:</p>
+<pre>
+set rlim_fd_max = 8192
+set rlim_fd_cur = 1024
+</pre>
+
+<h4>Java Virtual Machines</h4>
+
+<h5>IBM 1.3.0 Linux</h5>
+<pre>
+java version "1.3.0"
+Java(TM) 2 Runtime Environment, Standard Edition (build 1.3.0)
+Classic VM (build 1.3.0, J2RE 1.3.0 IBM build cx130-20010502 (JIT enabled: jitc))
+</pre>
+
+<h5>IBM 1.3.0 Windows</h5>
+<pre>
+java version "1.3.0"
+Java(TM) 2 Runtime Environment, Standard Edition (build 1.3.0)
+Classic VM (build 1.3.0, J2RE 1.3.0 IBM build cn130-20010329 (JIT enabled: jitc))
+</pre>
+
+<h5>Microsoft 1.1.4 Windows</h5>
+<pre>
+Microsoft (R) Command-line Loader for Java  Version 5.00.3802
+Copyright (C) Microsoft Corp 1996-2000. All rights reserved.
+</pre>
+
+<h5>Appeal JRockit 2.0.7 Windows</h5>
+<pre>
+JRockit build 2.0.7-excelsior80, Thin Threads,
+  Generational Stop & Copy Garbage Collector, started.
+
+java version "1.3.1"
+Java(TM) 2 Runtime Environment, Standard Edition (build 1.3.1-b24)
+JRockit(tm) Virtual Machine (build 2.0.7-excelsior80, Thin Threads)
+</pre>
+
+<h5>Sun 1.3.1 Windows (HotSpot Server VM)</h5>
+<pre>
+java version "1.3.1"
+Java(TM) 2 Runtime Environment, Standard Edition (build 1.3.1-b24)
+Java HotSpot(TM) Server VM (build 1.3.1-b24, mixed mode)
+</pre>
+
+<h5>Sun 1.3.1 Linux (HotSpot Server VM)</h5>
+<pre>
+java version "1.3.1"
+Java(TM) 2 Runtime Environment, Standard Edition (build 1.3.1-b24)
+Java HotSpot(TM) Server VM (build 1.3.1-b24, mixed mode)
+</pre>
+
+<h5>Sun 1.2.2 Solaris (Exact VM)</h5>
+<pre>
+java version "1.2.2"
+Solaris VM (build Solaris_JDK_1.2.2_08, native threads, sunwjit)
+</pre>
+
+<h5>Blackdown 1.3.0 Linux (green threads, OpenJIT)</h5>
+<pre>
+java version "1.3.0"
+Java(TM) 2 Runtime Environment, Standard Edition (build Blackdown-1.3.0-FCS)
+Classic VM (build Blackdown-1.3.0-FCS, green threads, OpenJIT)
+</pre>
+
+<h5>Blackdown 1.3.0 FreeBSD (green threads, OpenJIT)</h5>
+<pre>
+java version "1.3.0"
+Java(TM) 2 Runtime Environment, Standard Edition (build Blackdown-1.3.0-FCS)
+Classic VM (build Blackdown-1.3.0-FCS, green threads, OpenJIT)
+</pre>
+<p>Ran using the Linux emulation package:</p>
+<pre>
+Linux ppro 2.2.12 FreeBSD 4.2-RELEASE #0:
+  Mon Nov 20 13:02:55 GMT 2000 jkh@ben i386 unknown
+Glibc 2.1.2
+</pre>
+<p>Modified <code>/usr/local/j2sdk1.3.0/bin/.java_wrapper</code> as
+follows:</p>
+<pre>
+> diff .java_wrapper.old .java_wrapper
+36,37c36,37
+<     link=`expr "$ls" : '.*-> \(.*\)$'`
+<     if expr "${link}" : '/' > /dev/null; then
+---
+>     link=`/usr/compat/linux/usr/bin/expr "$ls" : '.*-> \(.*\)$'`
+>     if /usr/compat/linux/usr/bin/expr "${link}" : '/' > /dev/null; then
+</pre>
+
+<h5>Sun 1.3.1 Solaris (HotSpot Server VM)</h5>
+<pre>
+java version "1.3.1"
+Java(TM) 2 Runtime Environment, Standard Edition (build 1.3.1-b24)
+Java HotSpot(TM) Server VM (build 1.3.1-b24, mixed mode)
+</pre>
+
+<hr noshade size="1">
+<a href="http://validator.w3.org/check/referer">
+<img src="valid-html401.png" alt="Valid HTML 4.01!" border="0" width="88" height="31" hspace="5" align="left" />
+</a>
+<a href="http://jigsaw.w3.org/css-validator/">
+<img src="vcss.png" alt="Valid CSS!" border="0" width="88" height="31" hspace="5" align="left" />
+</a>
+Copyright &copy; 2001 Volano LLC. All rights reserved. Volano,
+VolanoChat, and VolanoMark are trademarks of Volano LLC. All other
+trademarks are the property of their respective owners. Contact
+<a href="mailto:john@volano.com">John Neffenger</a> with questions or
+comments. Charts created with
+<a href="http://www.sgpr.net/doc/Welcome.html">Ploticus Data Display
+Software</a>.
+</body>
+</html>

@@ -1,0 +1,352 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="description" content="Linux kernel version 2.2 socket and thread limitations.">
+<link rel="canonical" href="http://www.volano.org/articles/linux-2.2-sockets-threads/">
+<link type="text/css" rel="stylesheet" href="index.css" />
+<title>Linux 2.2 Sockets and Threads</title>
+</head>
+<body>
+<p><a href="../../index.html">Home</a> → <a href="../../programming.html">Programming</a> → Linux 2.2 Sockets and Threads</p>
+
+<h1>Linux 2.2 Sockets and Threads</h1>
+<p>By John Neffenger<br>March 1, 2000</p>
+
+<p>This document describes how to modify the per-process file descriptor limit and task limit of the Linux version 2.2 kernel to increase the number of sockets and threads that a Java server application can create.
+In particular, it describes the socket and thread requirements of the VOLANO<sup>®</sup> chat server, but similar requirements are likely to exist in any server application written for the Java platform.
+Note that the current Linux kernel version is 2.6, so this information is unlikely to apply to any recent Linux distribution.</p>
+
+<h2>File descriptors and tasks</h2>
+
+<p>When running on the Linux 2.2 kernel, each process is limited by default to 1,024 file descriptors.
+Since the VolanoChat server requires one file descriptor for each person chatting through a VolanoChat applet, you are limited by default to a maximum of 1,024 simultaneous users when using the Linux 2.2 kernel.</p>
+
+<p>Some Java virtual machines, such as the IBM Developer Kit for Linux, Java Technology Edition, use native threads on Linux which require one <em>task</em> for each Java thread.
+Since VolanoChat requires two Java threads for each connection, you may need to increase the maximum number of tasks per user for such virtual machines.
+The default maximum number of tasks in a Linux 2.2 system is 512, with a maximum of 256 tasks per user.
+So by default, a VolanoChat server running under IBM JDK 1.1.6 for Linux can support a maximum of 128 people chatting at the same time.</p>
+
+<p>You can increase the limits testing the the number of file descriptors and the number of tasks in the Linux 2.2 kernel by following the steps below.
+These steps were performed on a Red Hat Linux 6.0 system using Linux kernel 2.2.5-15.
+The instructions may be different for your Linux system.</p>
+
+<p>To increase the maximum file descriptors per process to 4,096 (from 1,024) and the maximum tasks per user to 4,090 (from 256) on Linux 2.2, do the following steps.</p>
+
+<ol>
+
+<li>
+<p>Change the following C header files.</p>
+<p>In <code>/usr/include/linux/tasks.h</code>, change:</p>
+<pre>
+NR_TASKS            512          to 4090
+MAX_TASKS_PER_USER  (NR_TASKS/2) to NR_TASKS
+</pre>
+<p>In <code>/usr/include/linux/limits.h</code>, change:</p>
+<pre>
+NR_OPEN             1024 to 4096
+OPEN_MAX             256 to 4096
+</pre>
+<p>In <code>/usr/include/linux/posix_types.h</code>, change:</p>
+<pre>
+__FD_SETSIZE        1024 to 4096
+</pre>
+<p>In <code>/usr/include/bits/types.h</code>, change:</p>
+<pre>
+__FD_SETSIZE        1024 to 4096
+</pre>
+</li>
+
+<li>
+<p>To allow users to increase their file descriptor limits, change the following configuration files:</p>
+<p>In <code>/etc/security/limits.conf</code>, add the lines:</p>
+<pre>
+*       soft    nofile  1024
+*       hard    nofile  4096
+</pre>
+<p>In <code>/etc/pam.d/login</code>, add:</p>
+<pre>
+session required /lib/security/pam_limits.so
+</pre>
+</li>
+
+<li>To increase the system-wide file descriptor limit, add the following three lines to the <code>/etc/rc.d/rc.local</code> startup script:
+<pre>
+# Increase system-wide file descriptor limit.
+echo  8192 &gt; /proc/sys/fs/file-max
+echo 24576 &gt; /proc/sys/fs/inode-max
+</pre>
+</li>
+
+<li>
+<p>Change to the directory <code>/usr/src/linux</code> and set up the kernel sources with:</p>
+<pre>
+make mrproper
+</pre>
+</li>
+
+<li>
+<p>Make any other kernel configuration changes, such as setting the processor family type, by entering the command below.
+Save your changes and exit the configuration panel when you are done.</p>
+<pre>
+make xconfig
+</pre>
+</li>
+
+<li>
+<p>Prepare for the kernel build by entering:</p>
+<pre>
+make dep
+make clean
+</pre>
+</li>
+
+<li>
+<p>Rebuild your kernel with the commands:</p>
+<pre>
+make bzImage
+make modules
+</pre>
+</li>
+
+<li>
+<p>Backup your old modules directory by entering (for example):</p>
+<pre>
+mv /lib/modules/2.2.5-15 /lib/modules/2.2.5-15.old
+</pre>
+</li>
+
+<li>
+<p>Create a new set of kernel modules with the command:</p>
+<pre>
+make modules_install
+</pre>
+</li>
+
+<li>
+<p>Backup your old kernel by entering (for example):</p>
+<pre>
+mv /boot/vmlinuz /boot/vmlinuz.old
+</pre>
+</li>
+
+<li>
+<p>Copy over your new kernel image with:</p>
+<pre>
+cp /usr/src/linux/arch/i386/boot/bzImage /boot/vmlinuz
+</pre>
+</li>
+
+<li>
+<p>Edit the Linux loader configuration in <code>/etc/lilo.conf</code> so that your new kernel is the default and your old kernel is still available from the boot prompt, as in the example shown below:</p>
+<pre>
+boot=/dev/hda
+map=/boot/map
+install=/boot/boot.b
+prompt
+timeout=50
+image=/boot/vmlinuz
+        label=linux
+        root=/dev/hda1
+        read-only
+image=/boot/vmlinuz.old
+        label=linux.old
+        root=/dev/hda1
+        read-only
+</pre>
+</li>
+
+<li>
+<p>Generate the new Linux loader configuration by running:</p>
+<pre>
+/sbin/lilo
+</pre>
+</li>
+
+<li>
+<p>Shutdown and reboot with your new kernel by entering:</p>
+<pre>
+shutdown -r now
+</pre>
+</li>
+
+<li>
+<p>After rebooting, verify that the changes were effective as shown in the sections below.</p>
+</li>
+</ol>
+
+<h2>LinuxThreads 0.7 limits</h2>
+
+<p>Even after you rebuild your Linux 2.2 kernel to increase the maximum number of threads per Linux user from 256 to 4,090, there are still definitions in the thread library itself which limit the number of threads per process to less than 1,000.
+The VolanoChat server requires two threads for each person chatting through a VolanoChat applet, so the LinuxThreads implementation creates a limit of 500 people to a single VolanoChat server.</p>
+
+<p>You can increase this limit to 8,192 threads with the following steps. Even though the thread library will allow 8,192 threads per process after these changes, you'll still be limited by the Linux 2.2 kernel to a maximum of 4,090 threads for the Linux user account running the VolanoChat server after the changes in the previous section.
+The steps below are shown for a Red Hat Linux 6.0 system, so they may be different for your Linux distribution.</p>
+
+<ol>
+<li>
+<p>Install the Glibc 2.1.1 source package from <code>/mnt/cdrom/SRPMS/glibc-2.1.1-6.src.rpm</code> on the Red Hat Linux CD-ROM #2.</p>
+</li>
+
+<li>
+<p>Unpack the source archive <code>/usr/src/redhat/SOURCES/glibc-990416.tar.gz</code> so that you can modify two of the files.</p>
+</li>
+
+<li>
+<p>Change the following C header files.</p>
+<p>In <code>/usr/src/redhat/SOURCES/glibc/linuxthreads/internals.h</code>, change the size of the thread stack reserve from 2 megabytes down to 256 kilobytes (with a page size of 4,096 bytes):</p>
+<pre>
+STACK_SIZE  (2 * 1024 * 1024) -&gt; (64 * PAGE_SIZE)
+</pre>
+<p>In <code>sysdeps/unix/sysv/linux/bits/local_lim.h</code> under <code>/usr/src/redhat/SOURCES/glibc/linuxthreads</code>, change the Posix thread implementation limit from 1,024 per process to 8,192 per process:</p>
+<pre>
+PTHREAD_THREADS_MAX  1024 -&gt; 8192
+</pre>
+</li>
+
+<li>
+<p>Rebuild the source archive, <code>/usr/src/redhat/SOURCES/glibc-990416.tar.gz</code>, to include your changes, replacing the original copy.</p>
+</li>
+
+<li>
+<p>Change to the RPM specification directory, <code>/usr/src/redhat/SPECS</code>, and enter the command:</p>
+<pre>
+rpm -ba glibc-2.1.spec
+</pre>
+</li>
+
+<li>
+<p>After a few hours, the new LinuxThreads library will be found as <code>libpthread.so</code> under:</p>
+<pre>
+/usr/src/redhat/BUILD/glibc/build-i386-linux/linuxthread
+</pre>
+</li>
+
+<li>
+<p>Copy the new thread library into your own <code>lib</code> subdirectory:</p>
+<pre>
+cd /usr/src/redhat/BUILD/glibc/build-i386-linux
+cp linuxthread/libpthread.so ~/lib
+cd ~/lib
+ln -s libpthread.so libpthread.so.0
+</pre>
+</li>
+
+<li>
+<p>Define the environment variable <code>LD_LIBRARY_PATH</code> to include the subdirectory containing the new thread library <code>libpthread.so</code>.</p>
+</li>
+
+<li>
+<p>Verify the new thread limits as instructed below.</p>
+</li>
+</ol>
+
+<h2>Verifying the new file descriptor limit</h2>
+
+<p>Increase your new limits to their maximum by entering <code>"ulimit -n 4096"</code> for the Bash shell or <code>"unlimit"</code> for the C shell.
+You can then check whether your changes were effective by running the following C program:</p>
+
+<pre>
+#include &lt;sys/types.h&gt;
+#include &lt;fcntl.h&gt;
+#include &lt;stdio.h&gt;
+
+void main(void) {
+    int k = 3;
+    while (dup(0) != -1)
+        k++;
+    printf("Opens = %d Fdsize = %d\n", k, sizeof(fd_set) * 8);
+}
+</pre>
+
+<p>Both numbers printed should give your new file descriptor limit.</p>
+
+<h2>Verifying the new thread limit</h2>
+
+<p>You can use the following program to verify your new thread limits in the modified Linux 2.2 kernel and in the modified LinuxThreads library.</p>
+
+<pre>
+#include &lt;stdio.h&gt;
+#include &lt;unistd.h&gt;
+#include &lt;pthread.h&gt;
+
+#define MAX_THREADS 10000
+int i;
+
+void run(void) {
+    char c;
+    if (i &lt; 10)
+        printf("Address of c = %u KB\n", (unsigned int) &amp;c / 1024);
+    sleep(60 * 60);
+}
+
+int main(int argc, char *argv[]) {
+    int rc = 0;
+    pthread_t thread[MAX_THREADS];
+    printf("Creating threads ...\n");
+    for (i = 0; i &lt; MAX_THREADS &amp;&amp; rc == 0; i++) {
+        rc = pthread_create(&amp;(thread[i]), NULL, (void *) &amp;run, NULL);
+        if (rc == 0) {
+            pthread_detach(thread[i]);
+            if ((i + 1) % 1000 == 0)
+                printf("%i threads so far ...\n", i + 1);
+        }
+        else
+            printf("Failed with return code %i creating thread %i.\n",
+                rc, i + 1);
+    }
+    exit(0);
+}
+</pre>
+
+<p>Compile the program with:</p>
+
+<pre>
+gcc -lpthread -o count count.c
+</pre>
+
+<p>Running with the original LinuxThreads library will print:</p>
+
+<pre>
+blue:/home/john&gt; count
+Creating threads ...
+Address of c = 3137535 KB
+Address of c = 3135487 KB
+Address of c = 3133439 KB
+Address of c = 3131391 KB
+Address of c = 3129343 KB
+Address of c = 3127295 KB
+Address of c = 3125247 KB
+Address of c = 3123199 KB
+Address of c = 3121151 KB
+1000 threads so far ...
+Failed with return code 11 creating thread 1023.
+</pre>
+
+<p>while running with the modified LinuxThreads library will print:</p>
+
+<pre>
+blue:/home/john&gt; count
+Creating threads ...
+Address of c = 3144703 KB
+Address of c = 3144447 KB
+Address of c = 3144191 KB
+Address of c = 3143935 KB
+Address of c = 3143679 KB
+Address of c = 3143423 KB
+Address of c = 3143167 KB
+Address of c = 3142911 KB
+Address of c = 3142655 KB
+1000 threads so far ...
+2000 threads so far ...
+3000 threads so far ...
+4000 threads so far ...
+</pre>
+
+<p>You may need to enter <code>Ctrl-C</code> to exit the program.</p>
+
+<p>Notice that the thread stack addresses are spaced apart by 256 kilobytes instead of the earlier reserve of 2 megabytes per stack.
+Also notice that the program can create threads right up to the Linux 2.2 kernel limit of 4,090 for the system rather than the earlier LinuxThreads limit of 1,024 per process.</p>
+
+</body>
+</html>

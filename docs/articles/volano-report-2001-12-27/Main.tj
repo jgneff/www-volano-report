@@ -1,0 +1,17 @@
+# Build with "tj -p Main.tj".
+
+target=Main
+nofeedback=true
+tjdb=Tjdb.main
+b-disable-tjlib=true
+root=COM.volano.Main
+include=COM.volano.* \
+	java.awt.ComponentOrientation \
+	java.text.resources.LocaleElements \
+	java.text.resources.LocaleElements_en \
+	sun.net.www.protocol.http.Handler
+invisible=COM.volano.KeepAlive \
+	COM.volano.NTService \
+	COM.volano.Shutdown \
+	COM.volano.Status
+

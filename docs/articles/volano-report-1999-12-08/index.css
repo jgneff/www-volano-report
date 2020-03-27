@@ -1,0 +1,18 @@
+body {
+    font-family: Georgia, serif;
+    background: white;
+    color: black;
+    margin-left: 5%;
+    margin-right: 5%;
+}
+th {
+    font-family: "Trebuchet MS", sans-serif;
+    font-size: smaller;
+}
+td {
+    font-family: "Trebuchet MS", sans-serif;
+    font-size: smaller;
+}
+pre {
+    margin-left: 5%;
+}

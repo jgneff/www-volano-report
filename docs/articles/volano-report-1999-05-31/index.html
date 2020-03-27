@@ -1,0 +1,899 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html lang="en">
+<head>
+<title>The Volano Report</title>
+<meta name="description" content="VolanoMark 2.1.2 benchmark results">
+<meta name="keywords"    content="VolanoMark, Java, benchmark, server-side Java">
+<link rev="made" href="mailto:john@volano.com">
+<link type="text/css" rel="stylesheet" href="index.css">
+</head>
+<body bgcolor="#ffffff">
+
+<h1>The Volano Report</h1>
+<ul>
+<li><i>Last updated on May 31, 1999. The most recent Volano Report is
+available <a href="../../reports.html">here</a>.</i>
+</ul>
+<p>The tests presented in this report look at the performance and
+network scalability of 11 Java virtual machines on six operating systems
+using a common Intel hardware platform running VolanoMark<sup>&#8482;</sup> 2.1.
+VolanoMark attempts to answer two questions about Java virtual machines
+used in network server environments -- especially those environments
+involving a large number of active socket connections:
+<ol>
+<li><a href="#fast">Is it fast?</a>
+<li><a href="#scale">Does it scale?</a>
+</ol>
+
+<p>When run at high connection counts, VolanoMark essentially measures
+the consequences of omitting non-blocking input/output operations from
+the Java platform, as summarized by this Java Developer Connection
+request for enhancement (free registration required):
+<ul>
+<li><a href="http://developer.java.sun.com/developer/bugParade/bugs/4075058.html">Bug Id 4075058, "java.io: Add support for non-blocking I/O"</a>
+</ul>
+
+<p>For background information and download locations, please see the
+<a href="http://www.volano.com/benchmarks.html">Java Benchmarks</a> page
+on Volano's Web site.
+
+<a name="fast"></a>
+<h2>Is it fast?</h2>
+<h3>Run rules</h3>
+<p>The performance test was executed with the following commands on a
+local loopback connection, using the heap size options shown below where
+possible:
+<dl>
+<dt>Server
+<dd><code>java -ms8m -mx64m COM.volano.Main</code>
+<dt>Client
+<dd><code>java -ms8m -mx64m COM.volano.Mark -count 100</code>
+</dl>
+See the
+<a href="http://www.volano.com/benchmarks.html">COM.volano.Mark</a>
+command synopsis for a complete description of all options.
+<p>The operating system was rebooted before each set of tests for a
+particular Java virtual machine, and the first test result was
+discarded. The server side was restarted before each run of the client
+benchmark. The final score is the average of the best two out of three
+subsequent results.
+<h3>Results</h3>
+<p>Scores are the throughput of the server in messages per second.
+Bigger numbers are faster.
+See the <a href="#environments">Environments</a> section for details on
+the hardware platform, operating systems, and Java virtual machine
+environments.
+
+<!--
+Name       R    G    B
+========  ===  ===  ===
+red       255    0    0
+pink      255  128  128
+orange    255  128    0
+yellow    255  255    0
+seagreen    0  224    0
+green       0  128    0
+skyblue   128  192  255
+blue        0    0  255
+fuchsia   255    0  192
+violet    192    0  255
+black       0    0    0
+-->
+<!--
+Java Platform                       Results       Score
+============================    ================  =====
+Tower TowerJ 3.0.1 Linux        1897, 1900, 1893   1899
+IBM JDK 1.1.7 OS/2              1849, 1777, 1833   1841
+IBM JDK 1.1.7 Windows           1652, 1664, 1656   1660
+Sun HotSpot 1.0 Windows         1398, 1444, 1425   1435
+Microsoft SDK 3.2 Windows       1408, 1391, 1388   1400
+Sun JDK 1.2.1 Windows           1344, 1344, 1348   1346
+Novell JDK 1.1.5 NetWare        1216, 1216, 1220   1218 (a)
+Sun JDK 1.2 Solaris              881,  885,  827    883
+Transvirtual Kaffe 1.0b4 Linux   378,  380,  371    379
+Blackdown JDK 1.1.7 Linux        264,  264,  262    264
+JDK 1.1.7 FreeBSD                171,  172,  171    172
+=======================================================
+(a) Received "java.net.SocketException: Bad file number" 36 times on the
+    third run, but the test finished successfully.
+-->
+<p>
+<table cellspacing="1" cellpadding="4" border="1" width="100%">
+<tr bgcolor="#c0c0c0">
+<th>Java Platform</th>
+<th>Score</th>
+</tr>
+<tr bgcolor="#e0e0e0">
+<td nowrap align="right" valign="top">
+Tower TowerJ 3.0.1 Linux<br>
+IBM JDK 1.1.7 OS/2<br>
+IBM JDK 1.1.7 Windows<br>
+Sun HotSpot 1.0 Windows<br>
+Microsoft SDK 3.2 Windows<br>
+Sun JDK 1.2.1 Windows<br>
+Novell JDK 1.1.5 NetWare<br>
+Sun JDK 1.2 Solaris<br>
+Transvirtual Kaffe 1.0b4 Linux<br>
+Blackdown JDK 1.1.7 Linux<br>
+JDK 1.1.7 FreeBSD
+<td nowrap valign="top">
+<img width="379.80" height="10" src="colors/orange.gif"   alt="1899"> 1899<br>
+<img width="368.20" height="10" src="colors/skyblue.gif"  alt="1841"> 1841<br>
+<img width="332.00" height="10" src="colors/blue.gif"     alt="1660"> 1660<br>
+<img width="287.00" height="10" src="colors/fuchsia.gif"  alt="1435"> 1435<br>
+<img width="280.00" height="10" src="colors/red.gif"      alt="1400"> 1400<br>
+<img width="269.20" height="10" src="colors/green.gif"    alt="1346"> 1346<br>
+<img width="243.60" height="10" src="colors/pink.gif"     alt="1218"> 1218<br>
+<img width="176.60" height="10" src="colors/seagreen.gif"  alt="883">  883<br>
+<img width="75.80"  height="10" src="colors/yellow.gif"    alt="379">  379<br>
+<img width="52.80"  height="10" src="colors/black.gif"     alt="264">  264<br>
+<img width="34.40"  height="10" src="colors/violet.gif"    alt="172">  172<br>
+</td>
+</tr>
+</table>
+<b>Figure 1.</b> VolanoMark 2.1.2 local performance test, measuring
+throughput in messages per second.
+
+<p>
+<table cellspacing="1" cellpadding="4" border="1" width="100%">
+<tr bgcolor="#c0c0c0">
+<th>Java Platform</th>
+<th>Operating System</th>
+<th>Results</th>
+<th>Score</th>
+</tr>
+<tr bgcolor="#e0e0e0">
+<td nowrap><img src="colors/orange.gif" height="10" width="10" alt=""> Tower TowerJ 3.0.1 Linux</td>
+<td>Red Hat Linux 6.0 Intel</td>
+<td>1897, 1900, 1893</td>
+<td align="right">1899</td>
+</tr>
+<tr bgcolor="#e0e0e0">
+<td nowrap><img src="colors/skyblue.gif" height="10" width="10" alt=""> IBM JDK 1.1.7 OS/2</td>
+<td>OS/2 Warp Server for e-business</td>
+<td>1849, 1777, 1833</td>
+<td align="right">1841</td>
+</tr>
+<tr bgcolor="#e0e0e0">
+<td nowrap><img src="colors/blue.gif" height="10" width="10" alt=""> IBM JDK 1.1.7 Windows</td>
+<td>Windows NT Workstation 4.0</td>
+<td>1652, 1664, 1656</td>
+<td align="right">1660</td>
+</tr>
+<tr bgcolor="#e0e0e0">
+<td nowrap><img src="colors/fuchsia.gif" height="10" width="10" alt=""> Sun HotSpot 1.0 Windows</td>
+<td>Windows NT Workstation 4.0</td>
+<td>1398, 1444, 1425</td>
+<td align="right">1435</td>
+</tr>
+<tr bgcolor="#e0e0e0">
+<td nowrap><img src="colors/red.gif" height="10" width="10" alt=""> Microsoft SDK 3.2 Windows</td>
+<td>Windows NT Workstation 4.0</td>
+<td>1408, 1391, 1388</td>
+<td align="right">1400</td>
+</tr>
+<tr bgcolor="#e0e0e0">
+<td nowrap><img src="colors/green.gif" height="10" width="10" alt=""> Sun JDK 1.2.1 Windows</td>
+<td>Windows NT Workstation 4.0</td>
+<td>1344, 1344, 1348</td>
+<td align="right">1346</td>
+</tr>
+<tr bgcolor="#e0e0e0">
+<td nowrap><img src="colors/pink.gif" height="10" width="10" alt=""> Novell JDK 1.1.5 NetWare</td>
+<td>NetWare 5</td>
+<td>1216, 1216, 1220<sup><a href="#notes1">a</a></sup></td>
+<td align="right">1218</td>
+</tr>
+<tr bgcolor="#e0e0e0">
+<td nowrap><img src="colors/seagreen.gif" height="10" width="10" alt=""> Sun JDK 1.2 Solaris</td>
+<td>Solaris 7 Desktop Intel Platform Edition</td>
+<td>881, 885, 827</td>
+<td align="right">883</td>
+</tr>
+<tr bgcolor="#e0e0e0">
+<td nowrap><img src="colors/yellow.gif" height="10" width="10" alt=""> Transvirtual Kaffe 1.0b4 Linux</td>
+<td>Red Hat Linux 6.0 Intel</td>
+<td>378, 380, 371</td>
+<td align="right">379</td>
+</tr>
+<tr bgcolor="#e0e0e0">
+<td nowrap><img src="colors/black.gif" height="10" width="10" alt=""> Blackdown JDK 1.1.7 Linux</td>
+<td>Red Hat Linux 6.0 Intel</td>
+<td>264, 264, 262</td>
+<td align="right">264</td>
+</tr>
+<tr bgcolor="#e0e0e0">
+<td nowrap><img src="colors/violet.gif" height="10" width="10" alt=""> JDK 1.1.7 FreeBSD</td>
+<td>FreeBSD 3.1-RELEASE</td>
+<td>171, 172, 171</td>
+<td align="right">172</td>
+</tr>
+</table>
+<b>Table 1.</b> VolanoMark 2.1.2 local performance test, measuring
+throughput in messages per second. The final score is the average of the
+best 2 out of 3 results. All tests ran identical copies of VolanoMark
+2.1.2 on identical hardware.
+
+<a name="notes1"></a>
+<h4>Notes:</h4>
+<ol type="a">
+<li>Received <code>"java.net.SocketException: Bad file number"</code> 36
+times on the third run, but the test completed successfully.
+</ol>
+
+<a name="scale"></a>
+<h2>Does it scale?</h2>
+<h3>Run rules</h3>
+<p>The network scalability test was executed with the following commands
+over an isolated 10-Mbps Ethernet connection with a 10-Mbps hub, using
+the heap and stack size options shown below where possible:
+<dl>
+<dt>Server
+<dd><code>java -ms8m -mx128m -ss32k COM.volano.Main</code>
+<dt>Client
+<dd>
+<code>java -ms8m -mx128m -ss32k COM.volano.Mark -host xxx.yyy.zzz -rooms 15</code><br>
+<code>java -ms8m -mx128m -ss32k COM.volano.Mark -host xxx.yyy.zzz -rooms 30</code><br>
+<code>  ...</code><br>
+<code>java -ms8m -mx128m -ss32k COM.volano.Mark -host xxx.yyy.zzz -rooms 105</code>
+</dl>
+
+<p>See the
+<a href="http://www.volano.com/benchmarks.html">COM.volano.Mark</a>
+command synopsis for a complete description of all options.
+<p>The client test driver was executed under the IBM JDK 1.1.7 Java
+virtual machine using Windows NT 4.0 on a 200-MHz Intel Pentium Pro with
+a 256-kilobyte L2 cache and 256 megabytes of RAM. The operating systems
+on both sides were rebooted before each set of tests for a particular
+Java virtual machine. The VolanoMark server was not restarted between
+client test runs except where noted.
+<h3>Results</h3>
+<p>Scores are the throughput of the server in messages per second based
+on the total number of concurrent connections. Bigger numbers are
+faster.
+See the <a href="#environments">Environments</a> section for details on
+the hardware platform, operating systems, and Java virtual machine
+environments.
+
+<!--
+==============================================================================
+Java Platform               300   600   900  1200  1500  1800  2100  Limit
+=========================  ====  ====  ====  ====  ====  ====  ====  =====
+Tower TowerJ 3.0.1         2661  2387  2206  ====  ====  ====  ====   1014 (h)
+IBM JDK 1.1.7 OS/2         2157  1901   473  ====  ====  ====  ====   1102 (a)
+IBM JDK 1.1.7 Windows      2535  2181  1753  1499  1452   755   498  ~3600 (c)
+Sun HotSpot 1.0 Windows    2260  2081  ====  ====  ====  ====  ====    899 (a)
+Microsoft SDK 3.2 Windows  2367  1927  1529  1203   973   697   552  ~3600
+Sun JDK 1.2.1 Windows      2404  1788  1516  ====  ====  ====  ====    922 (a)
+Novell JDK 1.1.5 NetWare   2487  2014  1844  1293  1505  ====  ====  ~1500 (d)
+Sun JDK 1.2 Solaris        1612  1513  1448  1385  1321  1248  1184  ~4000
+Kaffe 1.0b4 Linux           897   732   600  ====  ====  ====  ====   1016 (e)
+Blackdown JDK 1.1.7 Linux   324   172   149  ====  ====  ====  ====   1016 (f)
+JDK 1.1.7 FreeBSD           296   189   122  ====  ====  ====  ====   1023 (g)
+==============================================================================
+(a) Failed with "java.lang.OutOfMemoryError".
+(b) Failed with "java.net.SocketException: accept: Invalid argument".
+(c) Failed on the first try at 1800 and 2100 connections with
+    "java.net.SocketException: Socket read failed: 10055" and with
+    "java.net.SocketException: Connection shutdown".
+    Restarted the server and it worked on the second try.
+(d) Took too long to complete at 1800 connections (thrashing).
+(e) Failed with "java.io.IOException: Too many open files".
+(f) Failed with "java.net.SocketException: Too many open files".
+(g) Failed with "java.net.SocketException: Too many open files in system".
+(h) Failed with "java.net.SocketException: accept: Too many open files".
+-->
+<p>
+<table cellspacing="1" cellpadding="4" border="1" width="100%">
+<tr bgcolor="#e0e0e0">
+<td nowrap align="center" valign="bottom">
+<img src="colors/orange.gif"   height="266.1" width="4" alt="2661">
+<img src="colors/skyblue.gif"  height="215.7" width="4" alt="2157">
+<img src="colors/blue.gif"     height="253.5" width="4" alt="2535">
+<img src="colors/fuchsia.gif"  height="226.0" width="4" alt="2260">
+<img src="colors/red.gif"      height="236.7" width="4" alt="2367">
+<img src="colors/green.gif"    height="240.4" width="4" alt="2404">
+<img src="colors/pink.gif"     height="248.7" width="4" alt="2487">
+<img src="colors/seagreen.gif" height="161.2" width="4" alt="1612">
+<img src="colors/yellow.gif"   height="89.7"  width="4" alt="897">
+<img src="colors/black.gif"    height="32.4"  width="4" alt="324">
+<img src="colors/violet.gif"   height="29.6"  width="4" alt="296">
+</td>
+<td nowrap align="center" valign="bottom">
+<img src="colors/orange.gif"   height="238.7" width="4" alt="2387">
+<img src="colors/skyblue.gif"  height="190.1" width="4" alt="1901">
+<img src="colors/blue.gif"     height="218.1" width="4" alt="2181">
+<img src="colors/fuchsia.gif"  height="208.1" width="4" alt="2081">
+<img src="colors/red.gif"      height="192.7" width="4" alt="1927">
+<img src="colors/green.gif"    height="178.8" width="4" alt="1788">
+<img src="colors/pink.gif"     height="201.4" width="4" alt="2014">
+<img src="colors/seagreen.gif" height="151.3" width="4" alt="1513">
+<img src="colors/yellow.gif"   height="73.2"  width="4" alt="732">
+<img src="colors/black.gif"    height="17.2"  width="4" alt="172">
+<img src="colors/violet.gif"   height="18.9"  width="4" alt="189">
+</td>
+<td nowrap align="center" valign="bottom">
+<img src="colors/orange.gif"   height="220.6" width="4" alt="2206">
+<img src="colors/skyblue.gif"  height="47.3"  width="4" alt="473">
+<img src="colors/blue.gif"     height="175.3" width="4" alt="1753">
+<img src="colors/fuchsia.gif"  height="1"     width="4" alt="0">
+<img src="colors/red.gif"      height="152.9" width="4" alt="1529">
+<img src="colors/green.gif"    height="151.6" width="4" alt="1516">
+<img src="colors/pink.gif"     height="184.4" width="4" alt="1844">
+<img src="colors/seagreen.gif" height="144.8" width="4" alt="1448">
+<img src="colors/yellow.gif"   height="60.0"  width="4" alt="600">
+<img src="colors/black.gif"    height="14.9"  width="4" alt="149">
+<img src="colors/violet.gif"   height="12.2"  width="4" alt="122">
+</td>
+<td nowrap align="center" valign="bottom">
+<img src="colors/orange.gif"   height="1"     width="4" alt="0">
+<img src="colors/skyblue.gif"  height="1"     width="4" alt="0">
+<img src="colors/blue.gif"     height="149.9" width="4" alt="1499">
+<img src="colors/fuchsia.gif"  height="1"     width="4" alt="0">
+<img src="colors/red.gif"      height="120.3" width="4" alt="1203">
+<img src="colors/green.gif"    height="1"     width="4" alt="0">
+<img src="colors/pink.gif"     height="129.3" width="4" alt="1293">
+<img src="colors/seagreen.gif" height="138.5" width="4" alt="1385">
+<img src="colors/yellow.gif"   height="1"     width="4" alt="0">
+<img src="colors/black.gif"    height="1"     width="4" alt="0">
+<img src="colors/violet.gif"   height="1"     width="4" alt="0">
+</td>
+<td nowrap align="center" valign="bottom">
+<img src="colors/orange.gif"   height="1"     width="4" alt="0">
+<img src="colors/skyblue.gif"  height="1"     width="4" alt="0">
+<img src="colors/blue.gif"     height="145.2" width="4" alt="1452">
+<img src="colors/fuchsia.gif"  height="1"     width="4" alt="0">
+<img src="colors/red.gif"      height="97.3"  width="4" alt="973">
+<img src="colors/green.gif"    height="1"     width="4" alt="0">
+<img src="colors/pink.gif"     height="150.5" width="4" alt="1505">
+<img src="colors/seagreen.gif" height="132.1" width="4" alt="1321">
+<img src="colors/yellow.gif"   height="1"     width="4" alt="0">
+<img src="colors/black.gif"    height="1"     width="4" alt="0">
+<img src="colors/violet.gif"   height="1"     width="4" alt="0">
+</td>
+<td nowrap align="center" valign="bottom">
+<img src="colors/orange.gif"   height="1"     width="4" alt="0">
+<img src="colors/skyblue.gif"  height="1"     width="4" alt="0">
+<img src="colors/blue.gif"     height="75.5"  width="4" alt="755">
+<img src="colors/fuchsia.gif"  height="1"     width="4" alt="0">
+<img src="colors/red.gif"      height="69.7"  width="4" alt="697">
+<img src="colors/green.gif"    height="1"     width="4" alt="0">
+<img src="colors/pink.gif"     height="1"     width="4" alt="0">
+<img src="colors/seagreen.gif" height="124.8" width="4" alt="1248">
+<img src="colors/yellow.gif"   height="1"     width="4" alt="0">
+<img src="colors/black.gif"    height="1"     width="4" alt="0">
+<img src="colors/violet.gif"   height="1"     width="4" alt="0">
+</td>
+<td nowrap align="center" valign="bottom">
+<img src="colors/orange.gif"   height="1"     width="4" alt="0">
+<img src="colors/skyblue.gif"  height="1"     width="4" alt="0">
+<img src="colors/blue.gif"     height="49.8"  width="4" alt="498">
+<img src="colors/fuchsia.gif"  height="1"     width="4" alt="0">
+<img src="colors/red.gif"      height="55.2"  width="4" alt="552">
+<img src="colors/green.gif"    height="1"     width="4" alt="0">
+<img src="colors/pink.gif"     height="1"     width="4" alt="0">
+<img src="colors/seagreen.gif" height="118.4" width="4" alt="1184">
+<img src="colors/yellow.gif"   height="1"     width="4" alt="0">
+<img src="colors/black.gif"    height="1"     width="4" alt="0">
+<img src="colors/violet.gif"   height="1"     width="4" alt="0">
+</td>
+</tr>
+<tr bgcolor="#c0c0c0">
+<th>300</th>
+<th>600</th>
+<th>900</th>
+<th>1200</th>
+<th>1500</th>
+<th>1800</th>
+<th>2100</th>
+</tr>
+<tr bgcolor="#e0e0e0">
+<td colspan="7">
+<table width="100%">
+<tr>
+<td nowrap valign="top">
+<img src="colors/orange.gif"   height="10" width="10" alt=""> Tower TowerJ 3.0.1 Linux<br>
+<img src="colors/skyblue.gif"  height="10" width="10" alt=""> IBM JDK 1.1.7 OS/2<br>
+<img src="colors/blue.gif"     height="10" width="10" alt=""> IBM JDK 1.1.7 Windows<br>
+<img src="colors/fuchsia.gif"  height="10" width="10" alt=""> Sun HotSpot 1.0 Windows<br>
+</td>
+<td nowrap valign="top">
+<img src="colors/red.gif"      height="10" width="10" alt=""> Microsoft SDK 3.2 Windows<br>
+<img src="colors/green.gif"    height="10" width="10" alt=""> Sun JDK 1.2.1 Windows<br>
+<img src="colors/pink.gif"     height="10" width="10" alt=""> Novell JDK 1.1.5 NetWare<br>
+<img src="colors/seagreen.gif" height="10" width="10" alt=""> Sun JDK 1.2 Solaris<br>
+</td>
+<td nowrap valign="top">
+<img src="colors/yellow.gif"    height="10" width="10" alt=""> Transvirtual Kaffe 1.0b4 Linux<br>
+<img src="colors/black.gif"   height="10" width="10" alt=""> Blackdown JDK 1.1.7 Linux<br>
+<img src="colors/violet.gif"   height="10" width="10" alt=""> JDK 1.1.7 FreeBSD<br>
+</td>
+</tr>
+</table>
+</tr>
+</table>
+<b>Figure 2.</b> VolanoMark 2.1.2 network scalability test, measuring
+throughput in messages per second based on the number of concurrent
+connections.
+
+<p>
+<table cellspacing="1" cellpadding="4" border="1" width="100%">
+<tr bgcolor="#c0c0c0">
+<th>Java Platform</th>
+<th>300</th>
+<th>600</th>
+<th>900</th>
+<th>1200</th>
+<th>1500</th>
+<th>1800</th>
+<th>2100</th>
+<th>Limit</th>
+</tr>
+<tr bgcolor="#e0e0e0">
+<td nowrap><img src="colors/orange.gif" height="10" width="10" alt=""> Tower TowerJ 3.0.1 Linux</td>
+<td align="right">2661</td>
+<td align="right">2387</td>
+<td align="right">2206</td>
+<td align="right">----<sup><a href="#notes2">h</a></sup></td>
+<td align="right">----</td>
+<td align="right">----</td>
+<td align="right">----</td>
+<td align="right">1014</td>
+</tr>
+<tr bgcolor="#e0e0e0">
+<td nowrap><img src="colors/skyblue.gif" height="10" width="10" alt=""> IBM JDK 1.1.7 OS/2</td>
+<td align="right">2157</td>
+<td align="right">1901</td>
+<td align="right">473</td>
+<td align="right">----<sup><a href="#notes2">a</a></sup></td>
+<td align="right">----</td>
+<td align="right">----</td>
+<td align="right">----</td>
+<td align="right">1102</td>
+</tr>
+<tr bgcolor="#e0e0e0">
+<td nowrap><img src="colors/blue.gif" height="10" width="10" alt=""> IBM JDK 1.1.7 Windows</td>
+<td align="right">2535</td>
+<td align="right">2181</td>
+<td align="right">1753</td>
+<td align="right">1499</td>
+<td align="right">1452</td>
+<td align="right">755<sup><a href="#notes2">c</a></sup></td>
+<td align="right">498<sup><a href="#notes2">c</a></sup></td>
+<td align="right">~ 3600</td>
+</tr>
+<tr bgcolor="#e0e0e0">
+<td nowrap><img src="colors/fuchsia.gif" height="10" width="10" alt=""> Sun HotSpot 1.0 Windows</td>
+<td align="right">2260</td>
+<td align="right">2081</td>
+<td align="right">----<sup><a href="#notes2">a</a></sup></td>
+<td align="right">----</td>
+<td align="right">----</td>
+<td align="right">----</td>
+<td align="right">----</td>
+<td align="right">899</td>
+</tr>
+<tr bgcolor="#e0e0e0">
+<td nowrap><img src="colors/red.gif" height="10" width="10" alt=""> Microsoft SDK 3.2 Windows</td>
+<td align="right">2367</td>
+<td align="right">1927</td>
+<td align="right">1529</td>
+<td align="right">1203</td>
+<td align="right">973</td>
+<td align="right">697</td>
+<td align="right">552</td>
+<td align="right">~ 3600</td>
+</tr>
+<tr bgcolor="#e0e0e0">
+<td nowrap><img src="colors/green.gif" height="10" width="10" alt=""> Sun JDK 1.2.1 Windows</td>
+<td align="right">2404</td>
+<td align="right">1788</td>
+<td align="right">1516</td>
+<td align="right">----<sup><a href="#notes2">a</a></sup></td>
+<td align="right">----</td>
+<td align="right">----</td>
+<td align="right">----</td>
+<td align="right">922</td>
+</tr>
+<tr bgcolor="#e0e0e0">
+<td nowrap><img src="colors/pink.gif" height="10" width="10" alt=""> Novell JDK 1.1.5 NetWare</td>
+<td align="right">2487</td>
+<td align="right">2014</td>
+<td align="right">1844</td>
+<td align="right">1293</td>
+<td align="right">1505</td>
+<td align="right">----<sup><a href="#notes2">d</a></sup></td>
+<td align="right">----</td>
+<td align="right">~ 1500</td>
+</tr>
+<tr bgcolor="#e0e0e0">
+<td nowrap><img src="colors/seagreen.gif" height="10" width="10" alt=""> Sun JDK 1.2 Solaris</td>
+<td align="right">1612</td>
+<td align="right">1513</td>
+<td align="right">1448</td>
+<td align="right">1385</td>
+<td align="right">1321</td>
+<td align="right">1248</td>
+<td align="right">1184</td>
+<td align="right">~ 4000</td>
+</tr>
+<tr bgcolor="#e0e0e0">
+<td nowrap><img src="colors/yellow.gif" height="10" width="10" alt=""> Transvirtual Kaffe 1.0b4 Linux</td>
+<td align="right">897</td>
+<td align="right">732</td>
+<td align="right">600</td>
+<td align="right">----<sup><a href="#notes2">e</a></sup></td>
+<td align="right">----</td>
+<td align="right">----</td>
+<td align="right">----</td>
+<td align="right">1016</td>
+</tr>
+<tr bgcolor="#e0e0e0">
+<td nowrap><img src="colors/black.gif" height="10" width="10" alt=""> Blackdown JDK 1.1.7 Linux</td>
+<td align="right">324</td>
+<td align="right">172</td>
+<td align="right">149</td>
+<td align="right">----<sup><a href="#notes2">f</a></sup></td>
+<td align="right">----</td>
+<td align="right">----</td>
+<td align="right">----</td>
+<td align="right">1016</td>
+</tr>
+<tr bgcolor="#e0e0e0">
+<td nowrap><img src="colors/violet.gif" height="10" width="10" alt=""> JDK 1.1.7 FreeBSD</td>
+<td align="right">296</td>
+<td align="right">189</td>
+<td align="right">122</td>
+<td align="right">----<sup><a href="#notes2">g</a></sup></td>
+<td align="right">----</td>
+<td align="right">----</td>
+<td align="right">----</td>
+<td align="right">1023</td>
+</tr>
+</table>
+<b>Table 2.</b> VolanoMark 2.1.2 network scalability test, measuring
+throughput in messages per second based on the number of concurrent
+connections. All tests ran identical copies of VolanoMark 2.1.2 on
+identical hardware. The Limit is the maximum number of simultaneous
+VolanoMark connections possible (shown as an estimate when preceded by
+"~").
+
+<a name="notes2"></a>
+<h4>Notes:</h4>
+<ol type="a">
+<li>Failed with <code>"java.lang.OutOfMemoryError"</code>.
+<li>Failed with <code>"java.net.SocketException: accept: Invalid
+argument"</code>.
+<li>Failed on the first try at 1800 and 2100 connections with
+<code>"java.net.SocketException: Socket read failed: 10055"</code> and
+<code>"java.net.SocketException: Connection shutdown"</code>. Restarted
+the server and it worked on the second try.
+<li>Took too long to complete at 1800 connections (thrashing).
+<li>Failed with <code>"java.io.IOException: Too many open files"</code>.
+<li>Failed with <code>"java.net.SocketException: Too many open files"</code>.
+<li>Failed with <code>"java.net.SocketException: Too many open files in system"</code>.
+<li>Failed with <code>"java.net.SocketException: accept: Too many open files"</code>.
+</ol>
+
+<h3>Solaris Intel vs. SPARC</h3>
+<p>The following tests compare VolanoMark 2.1.2, JDK 1.2, and Solaris 7
+on two different hardware architectures:
+<ul>
+<li>a 200 MHz Intel Pentium Pro processor with 256 MB of RAM, and
+<li>a 200 MHz Sun UltraSPARC processor with 256 MB of RAM.
+</ul>
+
+<!--
+Java Platform                     Results       Score
+============================  ================  =====
+Sun JDK 1.2 Solaris SPARC     1473, 1613, 1693   1653
+Sun JDK 1.2 Solaris Intel      881,  885,  827    883
+=====================================================
+-->
+<p>
+<table cellspacing="1" cellpadding="4" border="1" width="100%">
+<tr bgcolor="#c0c0c0">
+<th>Java Platform</th>
+<th>Score</th>
+</tr>
+<tr bgcolor="#e0e0e0">
+<td nowrap align="right" valign="top">
+Sun JDK 1.2 Solaris SPARC<br>
+Sun JDK 1.2 Solaris Intel
+<td nowrap valign="top">
+<img width="330.60" height="10" src="colors/violet.gif"   alt="1653"> 1653<br>
+<img width="176.60" height="10" src="colors/seagreen.gif" alt="883">   883<br>
+</td>
+</tr>
+</table>
+<b>Figure 4.</b> VolanoMark 2.1.2 local performance test, measuring
+throughput in messages per second.
+
+<p>
+<table cellspacing="1" cellpadding="4" border="1" width="100%">
+<tr bgcolor="#c0c0c0">
+<th>Java Platform</th>
+<th>Operating System</th>
+<th>Results</th>
+<th>Score</th>
+</tr>
+<tr bgcolor="#e0e0e0">
+<td nowrap><img src="colors/violet.gif" height="10" width="10" alt=""> Sun JDK 1.2 Solaris SPARC</td>
+<td>Solaris 7 Desktop SPARC Platform Edition</td>
+<td>1473, 1613, 1693</td>
+<td align="right">1653</td>
+</tr>
+<tr bgcolor="#e0e0e0">
+<td nowrap><img src="colors/seagreen.gif" height="10" width="10" alt=""> Sun JDK 1.2 Solaris Intel</td>
+<td>Solaris 7 Desktop Intel Platform Edition</td>
+<td>881, 885, 827</td>
+<td align="right">883</td>
+</tr>
+</table>
+<b>Table 4.</b> VolanoMark 2.1.2 local performance test, measuring
+throughput in messages per second. The final score is the average of the
+best 2 out of 3 results.
+
+<!--
+==============================================================================
+Java Platform               300   600   900  1200  1500  1800  2100  Limit
+=========================  ====  ====  ====  ====  ====  ====  ====  =====
+Sun JDK 1.2 Solaris SPARC  2631  2311  2130  1894  1780  1628  1488  ~4000
+Sun JDK 1.2 Solaris Intel  1612  1513  1448  1385  1321  1248  1184  ~4000
+==============================================================================
+-->
+<p>
+<table cellspacing="1" cellpadding="4" border="1" width="100%">
+<tr bgcolor="#e0e0e0">
+<td nowrap align="center" valign="bottom">
+<img src="colors/violet.gif"   height="263.1" width="10" alt="2631">
+<img src="colors/seagreen.gif" height="161.2" width="10" alt="1612">
+</td>
+<td nowrap align="center" valign="bottom">
+<img src="colors/violet.gif"   height="231.1" width="10" alt="2311">
+<img src="colors/seagreen.gif" height="151.3" width="10" alt="1513">
+</td>
+<td nowrap align="center" valign="bottom">
+<img src="colors/violet.gif"   height="213.0" width="10" alt="2130">
+<img src="colors/seagreen.gif" height="144.8" width="10" alt="1448">
+</td>
+<td nowrap align="center" valign="bottom">
+<img src="colors/violet.gif"   height="189.4" width="10" alt="1894">
+<img src="colors/seagreen.gif" height="138.5" width="10" alt="1385">
+</td>
+<td nowrap align="center" valign="bottom">
+<img src="colors/violet.gif"   height="178.0" width="10" alt="1780">
+<img src="colors/seagreen.gif" height="132.1" width="10" alt="1321">
+</td>
+<td nowrap align="center" valign="bottom">
+<img src="colors/violet.gif"   height="162.8" width="10" alt="1628">
+<img src="colors/seagreen.gif" height="124.8" width="10" alt="1248">
+</td>
+<td nowrap align="center" valign="bottom">
+<img src="colors/violet.gif"   height="148.8" width="10" alt="1488">
+<img src="colors/seagreen.gif" height="118.4" width="10" alt="1184">
+</td>
+</tr>
+<tr bgcolor="#c0c0c0">
+<th>300</th>
+<th>600</th>
+<th>900</th>
+<th>1200</th>
+<th>1500</th>
+<th>1800</th>
+<th>2100</th>
+</tr>
+<tr bgcolor="#e0e0e0">
+<td colspan="7">
+<table width="100%">
+<tr>
+<td nowrap valign="top">
+<img src="colors/violet.gif"   height="10" width="10" alt=""> Sun JDK 1.2 Solaris SPARC<br>
+<img src="colors/seagreen.gif" height="10" width="10" alt=""> Sun JDK 1.2 Solaris Intel
+</td>
+</tr>
+</table>
+</tr>
+</table>
+<b>Figure 5.</b> VolanoMark 2.1.2 network scalability test, measuring
+throughput in messages per second based on the number of concurrent
+connections.
+
+<p>
+<table cellspacing="1" cellpadding="4" border="1" width="100%">
+<tr bgcolor="#c0c0c0">
+<th>Java Platform</th>
+<th>300</th>
+<th>600</th>
+<th>900</th>
+<th>1200</th>
+<th>1500</th>
+<th>1800</th>
+<th>2100</th>
+<th>Limit</th>
+</tr>
+<tr bgcolor="#e0e0e0">
+<td nowrap><img src="colors/violet.gif" height="10" width="10" alt=""> Sun JDK 1.2 Solaris SPARC</td>
+<td align="right">2631</td>
+<td align="right">2311</td>
+<td align="right">2130</td>
+<td align="right">1894</td>
+<td align="right">1780</td>
+<td align="right">1628</td>
+<td align="right">1488</td>
+<td align="right">~ 4000</td>
+</tr>
+<tr bgcolor="#e0e0e0">
+<td nowrap><img src="colors/seagreen.gif" height="10" width="10" alt=""> Sun JDK 1.2 Solaris Intel</td>
+<td align="right">1612</td>
+<td align="right">1513</td>
+<td align="right">1448</td>
+<td align="right">1385</td>
+<td align="right">1321</td>
+<td align="right">1248</td>
+<td align="right">1184</td>
+<td align="right">~ 4000</td>
+</tr>
+</table>
+<b>Table 5.</b> VolanoMark 2.1.2 network scalability test, measuring
+throughput in messages per second based on the number of concurrent
+connections. The Limit is the maximum number of simultaneous VolanoMark
+connections possible (shown as an estimate when preceded by "~").
+
+<a name="environments"></a>
+<h2>Environments</h2>
+<p>All tests ran identical copies of VolanoMark 2.1.2 on identical
+hardware&#8212;a 200-MHz Intel Pentium Pro processor with a
+256-kilobyte L2 cache and 256 megabytes of RAM.
+<dl>
+<dt><a href="http://www.towerj.com/">Tower TowerJ 3.0.1 Linux</a>
+<dd>
+<ul>
+<li>10 May 1999&#8212;Tower Technology TowerJ Compiler 3.0.1.0
+<li>Red Hat Linux Intel 6.0 (Linux 2.2.5, glibc 2.1.1)
+<li>TowerJ Compiler <code>"version 3.0.1.0 x86-linux"</code>
+<li>Installed from <code>TowerJ_3_0_1_0_x86_linux.class</code> (13,116,025
+bytes).
+<li>Uses user-level threads and static native pre-compilation.
+<li>Used the experimental command line option <code>-Dtowerj.poll</code> to increase
+the network scalability on Linux.
+<li>Built executable with TowerJ project files
+<a href="Main.tj"><code>Main.tj</code></a> and
+<a href="Mark.tj"><code>Mark.tj</code></a>.
+<li>Did not increase the per-process file descriptor hard limit beyond
+its default of 1024 since it requires rebuilding the Linux 2.2 kernel.
+</ul>
+<dt><a href="http://www.ibm.com/java/jdk/download/index.html">IBM JDK 1.1.7 OS/2</a>
+<dd>
+<ul>
+<li>06 May 1999&#8212;IBM OS/2 Warp Developer Kit, Java Edition, Version 1.1.7
+<li>IBM OS/2 Warp Server for e-business (Internal revision <code>14.039F_UNI</code>)
+<li>java full version <code>"JDK 1.1.7A IBM build o117-19990506 (JIT enabled: javax)"</code>
+<li>Installed from the <code>runtime.exe</code> update (5,540,519 bytes)
+on top of the Java runtime shipped with OS/2 Warp Server for e-business.
+<li>Uses native threads and <code>javax</code> just-in-time compiler.
+<li>Modified the <code>CONFIG.SYS</code> file to increase the thread
+limit from 1024 to 4095 <code>(THREADS=4095)</code> and the initial swap
+file size from 2 MB to 32 MB
+<code>(SWAPPATH=C:\OS2\SYSTEM&nbsp;2048&nbsp;32768)</code>.
+</ul>
+<dt><a href="http://www.ibm.com/java/jdk/117/">IBM JDK 1.1.7 Windows</a>
+<dd>
+<ul>
+<li>28 January 1999&#8212;IBM Win32 Java Virtual Machine Version 1.1.7
+<li>Microsoft Windows NT Workstation Version 4.0 (Build 1381: Service Pack 4)
+<li>java full version <code>"JDK 1.1.7 IBM build n117p-19990128 (JIT enabled: ibmjitc)"</code>
+<li>Installed from <code>ibm117gm.exe</code> (10,132,439 bytes).
+<li>Uses native threads and <code>ibmjitc</code> just-in-time compiler.
+</ul>
+<dt><a href="http://java.sun.com/products/hotspot/launch/download.html">Sun HotSpot 1.0 Windows</a>
+<dd>
+<ul>
+<li>30 April 1999&#8212;Sun HotSpot VM 1.0 FCS
+<li>Microsoft Windows NT Workstation Version 4.0 (Build 1381: Service Pack 4)
+<li>Sun JDK 1.2.1 base with <code>HotSpot VM (1.0fcs, mixed mode, build E)</code>.
+<li>Installed from <code>hotspot1_0-win.zip</code> (1,622,666 bytes).
+<li>Uses native threads and an adaptive compiler.
+<li>The heap options must be preceded by the capital letter
+<code>"X"</code>, and the stack options are not available.
+</ul>
+<dt><a href="http://www.microsoft.com/java/download.htm">Microsoft SDK 3.2 Windows</a>
+<dd>
+<ul>
+<li>05 April 1999&#8212;Microsoft SDK 3.2 Windows Build 3177
+<li>Microsoft Windows NT Workstation Version 4.0 (Build 1381: Service Pack 4)
+<li>jview version <code>5.00.3177</code>
+<li>Installed from <code>MSJavx86.exe</code> (6,631,656 bytes) and
+<code>ClassR.exe</code> (1,593,064 bytes).
+<li>Uses native threads and just-in-time compiler.
+<li>Heap and stack command line options are not available.
+</ul>
+<dt><a href="http://java.sun.com/products/jdk/1.2/">Sun JDK 1.2.1 Windows</a>
+<dd>
+<ul>
+<li>27 March 1999&#8212;Sun JDK 1.2.1 Windows 95/98/NT Production Release
+<li>Microsoft Windows NT Workstation Version 4.0 (Build 1381: Service Pack 4)
+<li>java full version <code>"JDK-1.2.1-A"</code>
+<li>Installed from <code>jdk1_2_1-win.exe</code> (20,514,654 bytes).
+<li>Uses native threads and the <code>symcjit</code> Symantec
+Just-in-Time compiler.
+<li>The heap options must be preceded by the capital letter
+<code>"X"</code>, and the stack options are not available.
+</ul>
+<dt><a href="http://developer.novell.com/ndk/jvm.htm">Novell JDK 1.1.5 NetWare</a>
+<dd>
+<ul>
+<li>25 January 1999&#8212;Novell JVM for NetWare
+<li>Novell NetWare Version 5.00
+<li>java full version <code>"1.1.5"</code> (JVM dated 01/08/99)
+<li>Installed from <code>jvm.exe</code> (18,107,065 bytes).
+<li>Uses native threads and <code>symcjit</code> just-in-time compiler
+(Symantec Java! JustInTime Compiler Version 3.00.040(x) for JDK 1.1.x).
+<li>Set Maximum Packet Receive Buffers = 1000 (default is 500).
+<li>Modified the <code>java.cfg</code> file to enable the just-in-time
+compiler <code>(JAVA_COMPILER=symcjit)</code>.
+</ul>
+<dt><a href="http://www.sun.com/solaris/java/">Sun JDK 1.2 Solaris</a>
+<dd>
+<ul>
+<li>26 February 1999&#8212;Sun JDK 1.2 Solaris Production Release
+<li>Sun Solaris 7 Desktop Intel Platform Edition with patches 106981-04
+and 107079-02.
+<li>java full version <code>"Solaris_JDK_1.2_01"</code>
+<li>Installed from <code>Solaris_JDK_1.2_01_i386.tar.Z</code>
+(26,165,449 bytes).
+<li>Uses native threads and <code>sunwjit</code> just-in-time compiler.
+<li>The heap and stack options must be preceded by the capital letter
+<code>"X"</code>.
+<li>Increased the per-process file descriptor hard limit to 4096 by
+setting the <code>rlim_fd_max</code> variable in
+<code>/etc/system</code>.
+</ul>
+<dt><a href="http://www.transvirtual.com/">Transvirtual Kaffe 1.0b4 Linux</a>&#8212;<i>beta Java VM</i>
+<dd>
+<ul>
+<li>09 April 1999&#8212;Transvirtual Technologies Kaffe OpenVM 1.0 Beta 4
+<li>Red Hat Linux Intel 6.0 (Linux 2.2.5, glibc 2.1.1)
+<li>Kaffe Virtual Machine <code>"Engine: Just-in-time   Version: 1.0b4   Java Version: 1.1"</code>
+<li>Installed from the <code>kaffe-1.0.b4-2</code> package shipped with Red Hat Linux 6.0.
+<li>Uses <code>jthreads</code> user-level threads and <code>kaffe.jit</code> just-in-time compiler.
+<li>Did not increase the per-process file descriptor hard limit beyond
+its default of 1024 since it requires rebuilding the Linux 2.2 kernel.
+</ul>
+<dt><a href="http://www.blackdown.org/java-linux.html">Blackdown JDK 1.1.7 Linux</a>
+<dd>
+<ul>
+<li>04 November 1998&#8212;Blackdown JDK 1.1.7 Linux
+<li>Red Hat Linux Intel 6.0 (Linux 2.2.5, glibc 2.1.1)
+<li>java full version <code>"Linux_JDK_1.1.7B_v3_green_threads"</code>
+<li>Installed from <code>jdk_1.1.7-v3-glibc-x86.tar.bz2</code> (10,130,082 bytes).
+<li>Uses user-level threads and no just-in-time compiler.
+<li>Did not increase the per-process file descriptor hard limit beyond
+its default of 1024 since it requires rebuilding the Linux 2.2 kernel.
+</ul>
+<dt><a href="http://www.freebsd.org/java/"> JDK 1.1.7 FreeBSD</a>
+<dd>
+<ul>
+<li>21 December 1998&#8212;JDK 1.1.7 for FreeBSD
+<li>FreeBSD 3.1-RELEASE
+<li>java full version <code>"jdk1.1.7-FreeBSD:1998/12/21"</code>
+<li>Installed from <code>jdk1.1.7.V98-12-21.tar.gz</code> (12,920,606 bytes).
+<li>Uses user-level threads and no just-in-time compiler.
+<li>Did not increase the per-process file descriptor hard limit beyond
+its default of 1024 since the performance at high connection levels did
+not justify running the tests.
+</ul>
+</dl>
+
+<hr>
+<a href="http://validator.w3.org/check/referer">
+<img src="valid-html40.png" alt="Valid HTML 4.0!" border="0" width="88" height="31" hspace="5" align="left" />
+</a>
+<a href="http://jigsaw.w3.org/css-validator/">
+<img src="vcss.png" alt="Valid CSS!" border="0" width="88" height="31" hspace="5" align="left" />
+</a>
+Copyright &copy; 1999-2001 Volano LLC. All rights reserved.<br>
+Contact <a href="mailto:john@volano.com">John Neffenger</a> with
+questions or comments.
+</body>
+</html>

@@ -1,0 +1,161 @@
+/*
+    hevea.css - My styles for HEVEA output
+
+    The "text-align" property works for inline-level child elements
+    like "img" but not for block-level child elements like "table".
+    Yet the declarations for "margin-left" and "margin-right" apply
+    only to the selected element itself (the "div"), and not to
+    its children. Therefore, use "inherit" or define the margin
+    declarations explicitly to apply them on block-level child
+    elements.
+
+    Note that IE 8 supports the "inherit" property value, but IE 6
+    and 7 do not.
+*/
+
+/* Source code, Terminal output, and generic listings */
+.source, .terminal {
+    font-family: "Courier New", monospace;
+    margin-bottom: 1.5em;
+}
+
+/* Source code syntax highlighting */
+.source b {
+    color: #2020DF;     /* 75% saturation blue */
+    font-weight: bold;
+}
+.source i {
+    color: #107010;     /* 75% saturation green */
+    font-style: oblique;
+}
+.source em {
+    color: #DF2020;     /* 75% saturation red */
+    font-style: italic;
+}
+
+/* Terminal session input and string highlighting */
+.terminal i {
+    color: #2020DF;     /* 75% saturation blue */
+    font-style: oblique;
+}
+.terminal em {
+    font-style: italic;
+}
+
+/* Rules derived from HEVEA-generated external stylesheet. */
+
+ul.toc {
+    padding-left: 1.5em;    /* For IE 6 and 7 */
+}
+div.center, div.caption {
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
+}
+div.flushleft {
+    text-align: left;
+    margin-right: auto;
+}
+div.flushright {
+    text-align: right;
+    margin-left: auto;
+}
+
+/*
+    Google Page Speed complains with the following message:
+        Use efficient CSS selectors
+        Tag key with descendant selector and Class overly qualified
+        with tag
+    So remove tag qualifiers on classes below:
+        div.center table     -> .center table
+        div.caption table    -> .caption table
+        div.flushleft table  -> .flushleft table
+        div.flushright table -> .flushright table
+        blockquote.figure hr -> .figure hr
+        blockquote.table hr  -> .table hr
+        table.title td       -> .title td
+    Note: IE 6 does not support child selectors.
+*/
+
+/*
+    Get the margins for a table or the caption of a floating table
+    or figure (also an HTML table) from its parent "div" element,
+    such as a "div" with class "caption", "center", "flushleft", or
+    "flushright".
+        div table {
+            margin-left: inherit;
+            margin-right: inherit;
+        }
+    Make these explicit until IE 6 and 7 are gone.
+*/
+/* Removed div tag on following selectors for Page Speed. */
+.center table, .caption table {
+    margin-left: auto;
+    margin-right: auto;
+}
+.flushleft table {
+    margin-right: auto;
+}
+.flushright table {
+    margin-left: auto;
+}
+
+/*
+    Fix use of "blockquote" element to indent floating figures
+    and tables.
+        blockquote.figure, blockquote.table {
+            margin: 0;
+            color: inherit;
+            font-style: inherit;
+        }
+    Make these explicit until IE 6 and 7 are gone.
+*/
+blockquote.figure, blockquote.table {
+    margin: 0;
+    color: #222;            /* Inherited from "body" element */
+    font-style: normal;     /* Inherited from User Agent CSS */
+}
+
+/* Fix height variations on rules in Firefox when "height: 0.1em". */
+/* Removed blockquote tag on following selectors for Page Speed. */
+.figure hr, .table hr {
+    height: 1px;
+}
+
+/* Fix use of "table" element to format title. */
+/* Removed table tag on following selector for Page Speed. */
+.title td {
+    padding: 0;
+}
+
+/*
+    Translate the HTML presentational attributes to the corresponding
+    CSS rules so they can override the default styles. See:
+        Precedence of non-CSS presentational hints
+        http://www.w3.org/TR/CSS21/cascade.html#preshint
+*/
+td[align="left"] {
+    text-align: left;
+}
+td[align="right"] {
+    text-align: right;
+}
+td[align="center"] {
+    text-align: center;
+}
+td[valign="top"] {
+    vertical-align: top;
+}
+td[valign="bottom"] {
+    vertical-align: bottom;
+}
+td[nowrap] {
+    white-space: nowrap;
+}
+
+/* Give "boxed" the same padding and margins as the Blueprint "box" class. */
+div.boxed {
+    padding: 1.4em;         /* Compensate for 1px border */
+    margin-bottom: 1.5em;
+    border: 1px solid #ddd;
+}

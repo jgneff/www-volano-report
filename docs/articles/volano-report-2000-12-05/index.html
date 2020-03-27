@@ -1,0 +1,669 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html lang="en">
+<head>
+<title>The Volano Report</title>
+<meta name="description" content="VolanoMark benchmark results">
+<meta name="keywords"    content="VolanoMark, Volano, Java, benchmark">
+<link rev="made" href="mailto:john@volano.com">
+<link type="text/css" rel="stylesheet" href="index.css">
+<script type="text/javascript" src="index.js"></script>
+
+<script type="text/javascript">
+initialize(12, 4, 5);
+
+n = 0;
+platform[n].name    = "IBM J2SE 1.3.0 Windows";
+platform[n].style   = "windows";
+platform[n].loop[0] = 2197;
+platform[n].loop[1] = 2270;
+platform[n].loop[2] = 2285;
+platform[n].loop[3] = 2288;
+platform[n].net[0]  = 2197;
+platform[n].net[1]  = 2427;
+platform[n].net[2]  = 2198;
+platform[n].net[3]  = 0;
+platform[n].net[4]  = 0;
+platform[n].error   = "java.lang.OutOfMemoryError at 3295 connections.";
+
+n = 1;
+platform[n].name    = "Tower TowerJ 3.5.3 Linux";
+platform[n].style   = "linux";
+platform[n].loop[0] = 2038;
+platform[n].loop[1] = 2015;
+platform[n].loop[2] = 2024;
+platform[n].loop[3] = 2023;
+platform[n].net[0]  = 2634;
+platform[n].net[1]  = 0;
+platform[n].net[2]  = 0;
+platform[n].net[3]  = 0;
+platform[n].net[4]  = 0;
+platform[n].error   = "Terminates with no messages at 1614 connections.";
+
+n = 2;
+platform[n].name    = "IBM J2SE 1.3.0 Linux";
+platform[n].style   = "linux";
+platform[n].loop[0] = 1912;
+platform[n].loop[1] = 1982;
+platform[n].loop[2] = 1961;
+platform[n].loop[3] = 1967;
+platform[n].net[0]  = 0;
+platform[n].net[1]  = 0;
+platform[n].net[2]  = 0;
+platform[n].net[3]  = 0;
+platform[n].net[4]  = 0;
+platform[n].error   = "Terminates with no messages at 440 connections.";
+
+n = 3;
+platform[n].name    = "Appeal JRockit 1.1.2 Windows";
+platform[n].style   = "windows";
+platform[n].loop[0] = 1620;
+platform[n].loop[1] = 1632;
+platform[n].loop[2] = 1628;
+platform[n].loop[3] = 1625;
+platform[n].net[0]  = 2582;
+platform[n].net[1]  = 1775;
+platform[n].net[2]  = 1454;
+platform[n].net[3]  = 1176;
+platform[n].net[4]  = 933;
+platform[n].error   = "No errors!";
+
+n = 4;
+platform[n].name    = "Sun J2SE 1.3.0 HotSpot Server Windows";
+platform[n].style   = "windows";
+platform[n].loop[0] = 1553;
+platform[n].loop[1] = 1617;
+platform[n].loop[2] = 1598;
+platform[n].loop[3] = 1575;
+platform[n].net[0]  = 1316;
+platform[n].net[1]  = 875;
+platform[n].net[2]  = 524;
+platform[n].net[3]  = 0;
+platform[n].net[4]  = 0;
+platform[n].error   = "java.lang.OutOfMemoryError at 3272 connections.";
+
+n = 5;
+platform[n].name    = "Sun J2SE 1.3.0 HotSpot Server Linux";
+platform[n].style   = "linux";
+platform[n].loop[0] = 1453;
+platform[n].loop[1] = 1480;
+platform[n].loop[2] = 1468;
+platform[n].loop[3] = 1465;
+platform[n].net[0]  = 0;
+platform[n].net[1]  = 0;
+platform[n].net[2]  = 0;
+platform[n].net[3]  = 0;
+platform[n].net[4]  = 0;
+platform[n].error   = "Hangs at 440 connections with no CPU usage.";
+
+n = 6;
+platform[n].name    = "Sun J2SE 1.2.2 Solaris";
+platform[n].style   = "solaris";
+platform[n].loop[0] = 1391;
+platform[n].loop[1] = 1387;
+platform[n].loop[2] = 1398;
+platform[n].loop[3] = 1391;
+platform[n].net[0]  = 2415;
+platform[n].net[1]  = 1314;
+platform[n].net[2]  = 1982;
+platform[n].net[3]  = 1750;
+platform[n].net[4]  = 0;
+platform[n].error   = "Segmentation Fault - core dumped.";
+
+n = 7;
+platform[n].name    = "Blackdown/Inprise J2SE 1.2.2 Linux";
+platform[n].style   = "linux";
+platform[n].loop[0] = 1097;
+platform[n].loop[1] = 1095;
+platform[n].loop[2] = 1093;
+platform[n].loop[3] = 1093;
+platform[n].net[0]  = 1526;
+platform[n].net[1]  = 722;
+platform[n].net[2]  = 466;
+platform[n].net[3]  = 343;
+platform[n].net[4]  = 514;
+platform[n].error   = "No errors!";
+
+n = 8;
+platform[n].name    = "Sun J2SE 1.3.0 HotSpot Server Solaris";
+platform[n].style   = "solaris";
+platform[n].loop[0] = 993;
+platform[n].loop[1] = 1013;
+platform[n].loop[2] = 1005;
+platform[n].loop[3] = 996;
+platform[n].net[0]  = 1085;
+platform[n].net[1]  = 1169;
+platform[n].net[2]  = 909;
+platform[n].net[3]  = 644;
+platform[n].net[4]  = 0;
+platform[n].error   = "331 of the 5000 connections timed out.";
+
+n = 9;
+platform[n].name    = "Sun/Inprise J2SE 1.3.0 Linux";
+platform[n].style   = "linux";
+platform[n].loop[0] = 999;
+platform[n].loop[1] = 997;
+platform[n].loop[2] = 996;
+platform[n].loop[3] = 994;
+platform[n].net[0]  = 1108;
+platform[n].net[1]  = 0;
+platform[n].net[2]  = 0;
+platform[n].net[3]  = 0;
+platform[n].net[4]  = 0;
+platform[n].error   = "Hangs at 1015 connections with 100% CPU usage.";
+
+n = 10;
+platform[n].name    = "Sun/Inprise J2SE 1.3.0 FreeBSD";
+platform[n].style   = "freebsd";
+platform[n].loop[0] = 904;
+platform[n].loop[1] = 896;
+platform[n].loop[2] = 889;
+platform[n].loop[3] = 885;
+platform[n].net[0]  = 0;
+platform[n].net[1]  = 0;
+platform[n].net[2]  = 0;
+platform[n].net[3]  = 0;
+platform[n].net[4]  = 0;
+platform[n].error   = "Hangs at 980 connections with no CPU usage.";
+
+n = 11;
+platform[n].name    = "Blackdown/Inprise J2SE 1.2.2 FreeBSD";
+platform[n].style   = "freebsd";
+platform[n].loop[0] = 0;
+platform[n].loop[1] = 0;
+platform[n].loop[2] = 0;
+platform[n].loop[3] = 0;
+platform[n].net[0]  = 0;
+platform[n].net[1]  = 0;
+platform[n].net[2]  = 0;
+platform[n].net[3]  = 0;
+platform[n].net[4]  = 0;
+platform[n].error   = "Segmentation violation (eip = 28066F0E).";
+
+calculateScores();
+</script>
+</head>
+
+<body>
+<h1>The Volano Report</h1>
+<ul>
+<li><i>Last updated on December 5, 2000. The most recent Volano Report
+is available <a href="../../reports.html">here</a>.</i>
+</ul>
+
+<h2>What is VolanoMark?</h2>
+<p>For background information and download locations, please see the
+<a href="http://www.volano.com/benchmarks.html">Java Benchmarks</a> page on Volano's Web site.
+Since the server side of the VolanoMark<sup>&#8482;</sup> benchmark is
+our VolanoChat server, these test results help our customers choose the
+best Java virtual machine for their environment.</p>
+<p>VolanoMark is a pure Java server benchmark characterized by
+long-lasting network connections and high thread counts. The VolanoMark
+benchmark creates client connections in groups of 20 and measures how
+long it takes for the clients to take turns broadcasting their messages
+to the group. At the end of the test, it reports a score as the average
+number of messages transferred by the server per second.</p>
+<p><a href="http://developer.java.sun.com/developer/bugParade/bugs/4075058.html">Bug Id 4075058</a>,
+"java.io: Add support for non-blocking I/O," explains why you need lots of
+threads in order to handle dedicated connections to a pure Java server.
+<a href="http://java.sun.com/aboutJava/communityprocess/jsr/jsr_051_ioapis.html">JSR 51</a>,
+"New I/O APIs for the Java Platform," explains how Sun plans to change that.</p>
+
+<h2>What's new?</h2>
+<p>Well, just about everything is new -- the network, the hardware, the
+operating systems, and the Java virtual machines. This time I restricted
+testing to the Java 2 Standard Edition and excluded IBM OS/2 Warp Server
+and Novell NetWare, but that still left 12 Java platforms on 4 operating
+systems.</p>
+<p>This is the first time that Tower's TowerJ did not come out on top in
+the performance test. TowerJ's problems in the network scalability test,
+though, are most likely due to my running the test on Red Hat Linux 6.2,
+which Tower has not yet tested. In the network scalability test, only
+Appeal's JRockit 1.1.2 on Windows and Blackdown's J2SE 1.2.2-FCS on
+Linux made it all the way to 5,000 concurrent connections.</p>
+<p>On Linux, the latest "FCS" version of Blackdown's port solved
+problems that I hit trying to run Blackdown's earlier "RC4" version on
+Red Hat 6.2 (Linux 2.2.14, Glibc 2.1.3), even though "RC4" ran fine on
+Red Hat 6.0 (Linux 2.2.5, Glibc 2.1.1). In these tests and in the
+<a href="../volano-report-2000-03-24/">previous Volano Report</a> back in March,
+the Blackdown releases have been consistently more stable at high
+connection counts than Sun's own releases of the same version.</p>
+<p>On Solaris Intel, Sun's older ExactVM (1.2.2) outperformed the new
+HotSpot Server VM (1.3.0), although results may be quite different for
+Solaris SPARC. Both virtual machines do very well in the network
+scalability test, failing only when there are more than 4,000 concurrent
+connection. Our customers have tested successfully up to 10,000
+concurrent connections with Java on Solaris SPARC, so these problems may
+be limited to Java on the Solaris Intel Edition.</p>
+<p>Without a native binary release of Java 2 Standard Edition for
+FreeBSD, I tested the Linux Java VMs with FreeBSD's Linux emulation
+package. The earlier Blackdown "RC4" release and Sun's 1.3.0 Classic VM
+worked quite well up to about 980 connections on FreeBSD, but the latest
+"FCS" Blackdown release failed to run at all. In addition, neither Sun's
+nor Blackdown's native thread Java VMs, including HotSpot, worked under
+the FreeBSD Linux emulation.</p>
+<p>All of the Windows Java virtual machines did well, but only Appeal's
+JRockit gets around the Windows stack-based thread limit by mapping the
+Java threads onto its own smaller set of native threads.</p>
+
+<h2>The tests</h2>
+<p>The tests presented in this report look at the performance and
+network scalability of 12 Java virtual machines on 4 operating systems
+using a common Intel hardware platform running VolanoMark 2.1. You can
+find links to VolanoMark test results on other (non-Intel) hardware
+platforms on our <a href="http://www.volano.com/benchmarks.html">Java Benchmarks</a> page.
+VolanoMark attempts to answer two questions about Java virtual machines
+used in network server environments -- especially those environments
+involving a large number of dedicated socket connections:</p>
+<ol>
+<li><a href="#fast">Is it fast?</a></li>
+<li><a href="#scale">Does it scale?</a></li>
+</ol>
+<p>See the <a href="#details">Details</a> section for details
+on the hardware platform, operating systems, and Java virtual machine
+environments.</p>
+
+<h2 id="fast">Is it fast?</h2>
+<h3>Run rules</h3>
+<p>The performance test was executed with the following commands on a
+local loopback connection, using the heap size options shown below where
+possible:</p>
+<dl>
+<dt>Server</dt>
+<dd><code>java -Xms8m -Xmx64m COM.volano.Main</code></dd>
+<dt>Client</dt>
+<dd><code>java -Xms8m -Xmx64m COM.volano.Mark -count 100</code></dd>
+</dl>
+<p>See the <a href="http://www.volano.com/benchmarks.html">COM.volano.Mark</a> command
+synopsis for a complete description of all options. The operating system
+was rebooted before each set of tests for a particular Java virtual
+machine. The server side was not restarted before each run of the client
+benchmark. The client benchmark ran four times, with the final score as
+the average of the last three results.</p>
+<h3>Results</h3>
+<p>Scores are the throughput of the server in messages per second.
+Bigger numbers are faster.
+See the <a href="#details">Details</a> section for details on
+the hardware platform, operating systems, and Java virtual machine
+environments.</p>
+
+<script type="text/javascript">
+writeLoopbackTable();
+</script>
+<noscript>
+<pre>
+<b>                        Java Platform                         Score</b>
+               IBM J2SE 1.3.0 Windows =======================  2281
+             Tower TowerJ 3.5.3 Linux ====================     2021
+                 IBM J2SE 1.3.0 Linux ====================     1970
+         Appeal JRockit 1.1.2 Windows ================         1628
+Sun J2SE 1.3.0 HotSpot Server Windows ================         1597
+  Sun J2SE 1.3.0 HotSpot Server Linux ===============          1471
+               Sun J2SE 1.2.2 Solaris ==============           1392
+   Blackdown/Inprise J2SE 1.2.2 Linux ===========              1094
+Sun J2SE 1.3.0 HotSpot Server Solaris ==========               1005
+         Sun/Inprise J2SE 1.3.0 Linux ==========                996
+       Sun/Inprise J2SE 1.3.0 FreeBSD =========                 890
+ Blackdown/Inprise J2SE 1.2.2 FreeBSD (Segmentation violation)    0
+</pre>
+</noscript>
+<p class="caption"><b>Table 1.</b> VolanoMark 2.1.2 performance test,
+measuring throughput in messages per second with 200 concurrent local
+loopback connections.</p>
+
+<h2 id="scale">Does it scale?</h2>
+<h3>Run rules</h3>
+<p>The network scalability test was executed with the following commands
+over a 100-Mbps Ethernet cross-over cable connection, using the heap and
+stack size options shown below where possible:</p>
+<dl>
+<dt>Server</dt>
+<dd><code>java -Xms8m -Xmx256m -Xss32k COM.volano.Main</code></dd>
+<dt>Client</dt>
+<dd>
+<code>java -Xms8m -Xmx256m -Xss32k COM.volano.Mark -host xxx.yyy.zzz -rooms 50</code><br>
+<code>java -Xms8m -Xmx256m -Xss32k COM.volano.Mark -host xxx.yyy.zzz -rooms 100</code><br>
+<code>java -Xms8m -Xmx256m -Xss32k COM.volano.Mark -host xxx.yyy.zzz -rooms 150</code><br>
+<code>java -Xms8m -Xmx256m -Xss32k COM.volano.Mark -host xxx.yyy.zzz -rooms 200</code><br>
+<code>java -Xms8m -Xmx256m -Xss32k COM.volano.Mark -host xxx.yyy.zzz -rooms 250</code><br>
+</dd>
+</dl>
+<p>See the <a href="http://www.volano.com/benchmarks.html">COM.volano.Mark</a> command
+synopsis for a complete description of all options. The client test
+driver was executed under the Sun J2SE 1.3.0 Release Candidate HotSpot
+Server VM using Solaris 8 (6/00) on a 500-MHz Intel Pentium III with 384
+megabytes of RAM. The operating systems on both sides were rebooted
+before each set of tests for a particular Java virtual machine. The
+VolanoMark server was not restarted between client test runs.</p>
+<h3>Results</h3>
+<p>Scores are the throughput of the server in messages per second based
+on the total number of concurrent connections. Bigger numbers are
+faster. See the <a href="#details">Details</a> section for
+details on the hardware platform, operating systems, and Java virtual
+machine environments.</p>
+
+<script type="text/javascript">
+writeNetworkTable();
+</script>
+<noscript>
+<pre>
+<b>                        Java Platform  1000  2000  3000  4000  5000</b>
+               IBM J2SE 1.3.0 Windows  2197  2427  2198
+             Tower TowerJ 3.5.3 Linux  2634
+                 IBM J2SE 1.3.0 Linux
+         Appeal JRockit 1.1.2 Windows  2582  1775  1454  1176   933
+Sun J2SE 1.3.0 HotSpot Server Windows  1316   875   524
+  Sun J2SE 1.3.0 HotSpot Server Linux
+               Sun J2SE 1.2.2 Solaris  2415  1314  1982  1750
+   Blackdown/Inprise J2SE 1.2.2 Linux  1526   722   466   343   514
+Sun J2SE 1.3.0 HotSpot Server Solaris  1085  1169   909   644
+         Sun/Inprise J2SE 1.3.0 Linux  1108
+       Sun/Inprise J2SE 1.3.0 FreeBSD
+ Blackdown/Inprise J2SE 1.2.2 FreeBSD
+</pre>
+</noscript>
+<p class="caption"><b>Table 2.</b> VolanoMark 2.1.2 network scalability
+test, measuring throughput in messages per second with 1000 through 5000
+concurrent network connections.</p>
+
+<h2 id="details">Details</h2>
+<p>All tests ran identical copies of VolanoMark 2.1.2 on identical
+hardware.</p>
+
+<h3>Hardware</h3>
+
+<h4>Server</h4>
+<p>The server machine under test is a
+<a href="http://support.dell.com/us/en/home.asp?st=B21HJ">Dell OptiPlex
+GXpro</a> with a 200-MHz Intel Pentium Pro processor, 256 kilobytes L2
+cache, 320 megabytes ECC EDO RAM, a 3Com EtherLink XL 10/100 PCI TX NIC
+(3C905B-TX), and Phoenix ROM BIOS PLUS Version 1.10 A10.</p>
+
+<h4>Client</h4>
+<p>The client side driving the network tests is a
+<a href="http://support.dell.com/us/en/home.asp?st=CI2GR">Dell OptiPlex
+GX1</a> with a 500-MHz Intel Pentium III processor, 512 kilobytes L2
+cache, 384 megabytes ECC SDRAM, a 3Com EtherLink XL 10/100 PCI TX NIC
+(3C905B-TX), and Dell OptiPlex GX1 500L+ BIOS Revision A08.</p>
+
+<h3>Software</h3>
+
+<h4>Test scripts</h4>
+
+<h5>Loopback performance tests</h5>
+<p>The following Unix shell scripts and Windows batch files were used
+for the loopback performance tests with 200 concurrent connections.</p>
+<p>The server side used:</p>
+<ul>
+<li><a href="server.sh">server.sh</a> on Unix</li>
+<li><a href="server.bat">server.bat</a> on Windows</li>
+</ul>
+<p>The client side used:</p>
+<ul>
+<li><a href="client.sh">client.sh</a> on Unix</li>
+<li><a href="client.bat">client.bat</a> on Windows</li>
+</ul>
+<p>For a sleep function, the Windows batch files used
+<a href="sleep.java">sleep.java</a>.</p>
+
+<h5>Network scalability tests</h5>
+<p>The following Unix shell scripts and Windows batch files were used
+for the network scalability tests with 1000 through 5000 concurrent
+connections.</p>
+<p>The server side used:</p>
+<ul>
+<li><a href="netserver.sh">netserver.sh</a> on Unix</li>
+<li><a href="netserver.bat">netserver.bat</a> on Windows</li>
+</ul>
+<p>The client side used:</p>
+<ul>
+<li><a href="netclient.sh">netclient.sh</a> on Solaris 8 (6/00)</li>
+</ul>
+
+<h4>FreeBSD 4.0-RELEASE</h4>
+<p>Operating system version:</p>
+<pre>
+FreeBSD ppro.sf.volano.net 4.0-RELEASE FreeBSD 4.0-RELEASE #0:
+Mon Mar 20 22:50:22 GMT 2000
+root@monster.cdrom.com:/usr/src/sys/compile/GENERIC  i386
+</pre>
+<p>Contents of <code>/etc/sysctl.conf</code>:</p>
+<pre>
+# Increase file descriptor limits from their defaults of 1064.
+kern.maxfiles=16384             # System-wide limit
+kern.maxfilesperproc=8192       # Per-process limit
+</pre>
+
+<h5>Blackdown/Inprise J2SE 1.2.2 FreeBSD</h5>
+<p>Downloaded from:</p>
+<pre>
+<a href="http://www.blackdown.org/java-linux/ports.html">http://www.blackdown.org/java-linux/ports.html</a>
+</pre>
+<p>Ran using the Linux emulation package (Linux 2.2.12, Glibc 2.1.2) and the
+<a href="http://www.inprise.com/jbuilder/linux/download/">Inprise just-in-time compiler</a>.
+Changed the calls to <code>expr</code> in
+<code>jre1.2.2/bin/.java_wrapper</code> as follows:</p>
+<pre>
+expr -> /usr/compat/linux/usr/bin/expr
+</pre>
+<p>Java version:</p>
+<pre>
+java version "1.2.2"
+Classic VM (build Linux_JDK_1.2.2_FCS, green threads, javacomp)
+</pre>
+
+<h5>Sun/Inprise J2SE 1.3.0 FreeBSD</h5>
+<p>Downloaded from:</p>
+<pre>
+<a href="http://java.sun.com/products/jdk/1.3/">http://java.sun.com/products/jdk/1.3/</a>
+</pre>
+<p>Ran using the Linux emulation package (Linux 2.2.12, Glibc 2.1.2) and the
+<a href="http://www.inprise.com/jbuilder/linux/download/">Inprise just-in-time compiler</a>.
+Changed the calls to <code>/usr/bin/expr</code> in
+<code>jre1.3/bin/.java_wrapper</code> as follows:</p>
+<pre>
+/usr/bin/expr -> /usr/compat/linux/usr/bin/expr
+</pre>
+<p>Java version:</p>
+<pre>
+java version "1.3.0beta_refresh"
+Java(TM) 2 Runtime Environment, Standard Edition (build 1.3.0beta_refresh-b09)
+Classic VM (build 1.3.0beta_refresh-b09, green threads, javacomp)
+</pre>
+
+<h4>Microsoft Windows 2000 Professional</h4>
+<p>Operating system version:</p>
+<pre>
+Microsoft Windows 2000 Professional
+Version 5.0.2195 Service Pack 1 Build 2195
+</pre>
+<p>Optimized performance for background services (rather than
+applications) under Start, Settings, Control Panel, System, Advanced,
+Performance Options, Application response. This change specifies that
+all programs receive equal amounts of processor resources.</p>
+
+<h5>Appeal JRockit 1.1.2 Windows</h5>
+<p>Downloaded from:</p>
+<pre>
+<a href="http://www.jrockit.com/">http://www.jrockit.com/</a>
+</pre>
+<p>Windows 2000 Service Pack 1 broke the stack size options for JRockit,
+so neither the <code>Xss32k</code> option nor the
+<code>Xexpandstacks</code> option were used.</p>
+<p>Java version:</p>
+<pre>
+java version "1.3"
+JRockit(tm) Virtual Machine (version 1.1.2, build sarek130, Thin Threads)
+Java Home: C:\Program Files\JavaSoft\JRE\1.3
+Using bootclasspath
+  C:\Program Files\JavaSoft\JRE\1.3\lib\rt.jar;
+  C:\Program Files\JavaSoft\JRE\1.3\lib\i18n.jar;
+  C:\Program Files\JavaSoft\JRE\1.3\classes
+</pre>
+
+<h5>IBM J2SE 1.3.0 Windows</h5>
+<p>Downloaded from:</p>
+<pre>
+<a href="http://www.ibm.com/java/jdk/download/index.html">http://www.ibm.com/java/jdk/download/index.html</a>
+</pre>
+<p>Java version:</p>
+<pre>
+java version "1.3.0"
+Java(TM) 2 Runtime Environment, Standard Edition (build 1.3.0)
+Classic VM (build 1.3.0, J2RE 1.3.0 IBM build cn130-20000622 (JIT enabled: jitc))
+</pre>
+
+<h5>Sun J2SE 1.3.0 HotSpot Server Windows</h5>
+<p>Downloaded from:</p>
+<pre>
+<a href="http://java.sun.com/products/jdk/1.3/">http://java.sun.com/products/jdk/1.3/</a>
+</pre>
+<p>Java version:</p>
+<pre>
+java version "1.3.0"
+Java(TM) 2 Runtime Environment, Standard Edition (build 1.3.0-C)
+Java HotSpot(TM) Server VM (build 2.0fcs-E, mixed mode)
+</pre>
+
+<h4>Red Hat Linux 6.2</h4>
+<p>Operating system version (Linux 2.2.14, Glibc 2.1.3):</p>
+<pre>
+Red Hat Linux release 6.2 (Zoot)
+Linux ppro.sf.volano.net 2.2.14-5.0 #1
+  Tue Mar 7 21:07:39 EST 2000 i686 unknown
+</pre>
+<p>Added to <code>/etc/rc.d/rc.local</code>:</p>
+<pre>
+# Increase system-wide file descriptor limit.
+echo  32768 > /proc/sys/fs/file-max
+echo 131072 > /proc/sys/fs/inode-max
+</pre>
+<p>Added to <code>/etc/pam.d/login</code>:</p>
+<pre>
+session    required     /lib/security/pam_limits.so
+</pre>
+<p>Added to <code>/etc/security/limits.conf</code>:</p>
+<pre>
+*       soft    nofile  1024
+*       hard    nofile  8192
+</pre>
+
+<h5>Blackdown/Inprise J2SE 1.2.2 Linux</h5>
+<p>Downloaded from:</p>
+<pre>
+<a href="http://www.blackdown.org/java-linux/ports.html">http://www.blackdown.org/java-linux/ports.html</a>
+</pre>
+<p>Ran using the
+<a href="http://www.inprise.com/jbuilder/linux/download/">Inprise just-in-time compiler</a>.</p>
+<p>Java version:</p>
+<pre>
+java version "1.2.2"
+Classic VM (build Linux_JDK_1.2.2_FCS, green threads, javacomp)
+</pre>
+
+<h5>IBM J2SE 1.3.0 Linux</h5>
+<p>Downloaded from:</p>
+<pre>
+<a href="http://www.ibm.com/java/jdk/download/index.html">http://www.ibm.com/java/jdk/download/index.html</a>
+</pre>
+<p>Java version:</p>
+<pre>
+java version "1.3.0"
+Java(TM) 2 Runtime Environment, Standard Edition (build 1.3.0)
+Classic VM (build 1.3.0, J2RE 1.3.0 IBM build cx130-20000623 (JIT enabled: jitc))
+</pre>
+
+<h5>Sun J2SE 1.3.0 HotSpot Server Linux</h5>
+<p>Downloaded from:</p>
+<pre>
+<a href="http://java.sun.com/products/jdk/1.3/">http://java.sun.com/products/jdk/1.3/</a>
+</pre>
+<p>Java version:</p>
+<pre>
+java version "1.3.0beta_refresh"
+Java(TM) 2 Runtime Environment, Standard Edition (build 1.3.0beta_refresh-b09)
+Java HotSpot(TM) Server VM (build 1.3.0beta-b07, mixed mode)
+</pre>
+
+<h5>Sun/Inprise J2SE 1.3.0 Linux</h5>
+<p>Downloaded from:</p>
+<pre>
+<a href="http://java.sun.com/products/jdk/1.3/">http://java.sun.com/products/jdk/1.3/</a>
+</pre>
+<p>Ran using the
+<a href="http://www.inprise.com/jbuilder/linux/download/">Inprise just-in-time compiler</a>.</p>
+<p>Java version:</p>
+<pre>
+java version "1.3.0beta_refresh"
+Java(TM) 2 Runtime Environment, Standard Edition (build 1.3.0beta_refresh-b09)
+Classic VM (build 1.3.0beta_refresh-b09, green threads, javacomp)
+</pre>
+
+<h5>Tower TowerJ 3.5.3 Linux</h5>
+<p>Downloaded from:</p>
+<pre>
+<a href="http://www.towerj.com/">http://www.towerj.com/</a>
+</pre>
+<p>Used the TowerJ project files
+<a href="Main.tj"><code>Main.tj</code></a> and
+<a href="Mark.tj"><code>Mark.tj</code></a>.
+Built against Blackdown JDK 1.2.2 RC4 with the environment variables:</p>
+<pre>
+export TOWERJ=/usr/local/TowerJ
+export TOWERJ_JAVA_HOME=/usr/local/jdk1.2.2/jre
+export LD_LIBRARY_PATH=$TOWERJ/lib/x86-linux
+</pre>
+<p>Java version:</p>
+<pre>
+TowerJ Compiler (version 3.5.3.0 x86-linux)
+Copyright (c) 2000 Tower Technology Corporation. All rights reserved.
+</pre>
+
+<h4>Sun Solaris 8 (6/00)</h4>
+<p>Operating system version:</p>
+<pre>
+Solaris 8 6/00 s28x_u1wos_08 INTEL
+SunOS ppro 5.8 Generic_108529-01 i86pc i386 i86pc
+</pre>
+<p>Added patch 108941-07, "Motif 2.1.1_x86: Runtime library patch for
+Solaris 8_x86," as required by Sun J2SE 1.3.0-RC.
+<p>Added to <code>/etc/system</code>:</p>
+<pre>
+set rlim_fd_max = 8192
+set rlim_fd_cur = 1024
+</pre>
+
+<h5>Sun J2SE 1.2.2 Solaris</h5>
+<p>Downloaded from:</p>
+<pre>
+<a href="http://www.sun.com/software/solaris/java/download.html">http://www.sun.com/software/solaris/java/download.html</a>
+</pre>
+<p>Java version:</p>
+<pre>
+java version "1.2.2"
+Solaris VM (build Solaris_JDK_1.2.2_05a, native threads, sunwjit)
+</pre>
+
+<h5>Sun J2SE 1.3.0 HotSpot Server Solaris</h5>
+<p>Downloaded from:</p>
+<pre>
+<a href="http://www.sun.com/software/solaris/java/download.html">http://www.sun.com/software/solaris/java/download.html</a>
+</pre>
+<p>Java version:</p>
+<pre>
+java version "1.3.0"
+Java(TM) 2 Runtime Environment, Standard Edition (build 1.3.0-RC)
+Java HotSpot(TM) Server VM (build 1.3.0-RC, mixed mode)
+</pre>
+
+<hr noshade size="1">
+<a href="http://validator.w3.org/check/referer">
+<img src="valid-html40.png" alt="Valid HTML 4.0!" border="0" width="88" height="31" hspace="5" align="left" />
+</a>
+<a href="http://jigsaw.w3.org/css-validator/">
+<img src="vcss.png" alt="Valid CSS!" border="0" width="88" height="31" hspace="5" align="left" />
+</a>
+Copyright &copy; 2000 Volano LLC. All rights reserved.<br>
+Contact <a href="mailto:john@volano.com">John Neffenger</a> with
+questions or comments.
+</body>
+</html>

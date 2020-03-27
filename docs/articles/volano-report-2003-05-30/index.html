@@ -1,0 +1,1214 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<title>The Volano Report, May 2003</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="description" content="Author: John Neffenger, Published: 2003-05-30, Abstract: This report provides test results of the VolanoMark™ version 2.5 benchmark program on 17 Java virtual machines and four operating systems.">
+<meta name="generator" content="This document was translated from LaTeX by HEVEA (http://hevea.inria.fr/).">
+<meta name="slug" content="volano-report-2003-05-30">
+<link rel="canonical" href="http://www.volano.org/articles/volano-report-2003-05-30/">
+<link type="text/css" rel="stylesheet" href="index.css">
+<link rel="alternate" href="../../media/volano-report-2003-05-30.us.pdf" type="application/pdf" media="print" title="US Letter (PDF)">
+<link rel="alternate" href="../../media/volano-report-2003-05-30.a4.pdf" type="application/pdf" media="print" title="A4 Paper (PDF)">
+<link rel="alternate" href="../../media/volano-report-2003-05-30.a5.pdf" type="application/pdf" media="screen" title="E-book (PDF)">
+<link rel="alternate" href="../../media/volano-report-2003-05-30.utf8.txt" type="text/plain" media="tty" title="E-text (UTF-8)">
+</head>
+<body>
+<p><a href="../../index.html">Home</a> → <a href="../../reports.html">Volano Reports</a> → The Volano Report, May 2003</p>
+<table class="title">
+<tr>
+<td>
+<h1 class="titlemain">The Volano Report, May 2003</h1>
+<h3 class="titlerest">John Neffenger</h3>
+<h3 class="titlerest">May 30, 2003</h3>
+</td>
+</tr>
+</table>
+<div class="boxed right">
+<h2 class="section"></h2>
+<ul class="toc">
+<li class="li-toc"><a href="#htoc1">Introduction</a></li>
+<li class="li-toc"><a href="#htoc2">Performance</a></li>
+<li class="li-toc"><a href="#htoc3">Network Scalability</a></li>
+<li class="li-toc"><a href="#htoc4">Tricks</a></li>
+<li class="li-toc"><a href="#htoc5">Conclusions</a></li>
+<li class="li-toc"><a href="#htoc6">Hardware</a></li>
+<li class="li-toc"><a href="#htoc7">Operating Systems</a></li>
+<li class="li-toc"><a href="#htoc8">Java Virtual Machines</a></li>
+<li class="li-toc"><a href="#htoc9">Revisions</a></li>
+<li class="li-toc"><a href="#htoc10">Notices</a></li>
+</ul>
+</div>
+<h2 class="section"><a name="htoc1" id="htoc1"></a>Introduction</h2>
+<p>This report provides test results of the VolanoMark™ version 2.5 benchmark program on 17 Java virtual machines and four operating systems. VolanoMark is a pure Java server benchmark characterized by long-lasting network connections and high thread counts. Since 1997, VolanoMark has accurately predicted the performance and connection limitations of the various Java platforms for customers running VolanoChat in their production environments.</p>
+<p>See the <a href="http://www.volano.com/benchmarks.html">VolanoMark Benchmark</a> page for background information and instructions on how to run these tests yourself. The VolanoMark benchmark creates client connections in groups of 20 and measures the time required by the clients to take turns broadcasting a set of messages to the group. At the end of the test, it reports a score as the average number of messages transferred by the server per second. All tests ran identical copies of VolanoMark 2.5 on identical hardware. Because the tests compare Java version 1.3 and 1.4 virtual machines, the benchmark uses the synchronous Java input and output methods available in both versions and does not use the <code>java.nio</code> package found only in Java 1.4.</p>
+<h2 class="section"><a name="htoc2" id="htoc2"></a>Performance</h2>
+<p>The performance tests were executed over the local loopback interface with the Java command options shown in <a href="#loopoptions">Figure 2</a>. The operating system was rebooted before each set of tests for a particular Java virtual machine. The client benchmark ran four times, but the VolanoMark server was not restarted before each run of the client benchmark.</p>
+<p><a href="#loopchart">Figure 1</a> shows the final score for each Java platform. <a href="#looptable">Table 1</a> shows the test results in detail. Each test result is the server throughput in messages per second with 200 concurrent loopback connections. The score is the average of the last three results. Bigger numbers are faster.</p>
+<p><a name="loopchart" id="loopchart"></a></p>
+<blockquote class="figure">
+<div class="center">
+<div class="center">
+<hr width="80%" size="2"></div>
+<img src="loopback.png" width="500" height="648" alt="[Bar chart of performance scores]">
+<div class="caption">
+<table cellspacing="6" cellpadding="0">
+<tr>
+<td valign="top" align="left">Figure 1: VolanoMark 2.5 loopback performance scores. <a href="loopback.svg">View scalable image</a> (SVG).</td>
+</tr>
+</table>
+</div>
+<a name="fig:loopchart" id="fig:loopchart"></a>
+<div class="center">
+<hr width="80%" size="2"></div>
+</div>
+</blockquote>
+<p><a name="looptable" id="looptable"></a></p>
+<blockquote class="table">
+<div class="center">
+<div class="center">
+<hr width="80%" size="2"></div>
+<table cellspacing="6" cellpadding="0">
+<tr>
+<td style="font-weight: bold" align="right" nowrap>Java Platform</td>
+<td style="font-weight: bold" align="center" nowrap colspan="4">Test Results</td>
+<td style="font-weight: bold" align="right" nowrap>Score</td>
+</tr>
+<tr>
+<td align="right" nowrap>IBM 1.3.1 Windows</td>
+<td align="right" nowrap>4647</td>
+<td align="right" nowrap>4892</td>
+<td align="right" nowrap>4886</td>
+<td align="right" nowrap>4941</td>
+<td align="right" nowrap>4906</td>
+</tr>
+<tr>
+<td align="right" nowrap>IBM 1.4.0 Linux</td>
+<td align="right" nowrap>4080</td>
+<td align="right" nowrap>4291</td>
+<td align="right" nowrap>4478</td>
+<td align="right" nowrap>4364</td>
+<td align="right" nowrap>4378</td>
+</tr>
+<tr>
+<td align="right" nowrap>Sun 1.3.1 Windows</td>
+<td align="right" nowrap>4160</td>
+<td align="right" nowrap>4325</td>
+<td align="right" nowrap>4365</td>
+<td align="right" nowrap>4390</td>
+<td align="right" nowrap>4360</td>
+</tr>
+<tr>
+<td align="right" nowrap>Sun 1.4.1 Windows</td>
+<td align="right" nowrap>3983</td>
+<td align="right" nowrap>4125</td>
+<td align="right" nowrap>4307</td>
+<td align="right" nowrap>4268</td>
+<td align="right" nowrap>4233</td>
+</tr>
+<tr>
+<td align="right" nowrap>BEA 3.1 Windows</td>
+<td align="right" nowrap>4088</td>
+<td align="right" nowrap>4102</td>
+<td align="right" nowrap>4171</td>
+<td align="right" nowrap>4177</td>
+<td align="right" nowrap>4150</td>
+</tr>
+<tr>
+<td align="right" nowrap>IBM 1.3.1 Linux</td>
+<td align="right" nowrap>3918</td>
+<td align="right" nowrap>4112</td>
+<td align="right" nowrap>4110</td>
+<td align="right" nowrap>4109</td>
+<td align="right" nowrap>4110</td>
+</tr>
+<tr>
+<td align="right" nowrap>Sun 1.3.1 Linux</td>
+<td align="right" nowrap>3727</td>
+<td align="right" nowrap>3851</td>
+<td align="right" nowrap>3873</td>
+<td align="right" nowrap>3882</td>
+<td align="right" nowrap>3869</td>
+</tr>
+<tr>
+<td align="right" nowrap>Blackdown 1.4.1 Linux</td>
+<td align="right" nowrap>3513</td>
+<td align="right" nowrap>3619</td>
+<td align="right" nowrap>3783</td>
+<td align="right" nowrap>3850</td>
+<td align="right" nowrap>3751</td>
+</tr>
+<tr>
+<td align="right" nowrap>Sun 1.4.1 Linux</td>
+<td align="right" nowrap>3296</td>
+<td align="right" nowrap>3364</td>
+<td align="right" nowrap>3540</td>
+<td align="right" nowrap>3414</td>
+<td align="right" nowrap>3439</td>
+</tr>
+<tr>
+<td align="right" nowrap>Sun 1.4.1 Solaris</td>
+<td align="right" nowrap>2835</td>
+<td align="right" nowrap>2937</td>
+<td align="right" nowrap>2947</td>
+<td align="right" nowrap>2963</td>
+<td align="right" nowrap>2949</td>
+</tr>
+<tr>
+<td align="right" nowrap>Sun 1.3.1 Solaris</td>
+<td align="right" nowrap>2595</td>
+<td align="right" nowrap>2665</td>
+<td align="right" nowrap>2699</td>
+<td align="right" nowrap>2697</td>
+<td align="right" nowrap>2687</td>
+</tr>
+<tr>
+<td align="right" nowrap>BEA 7.0 Windows</td>
+<td align="right" nowrap>1820</td>
+<td align="right" nowrap>1817</td>
+<td align="right" nowrap>1815</td>
+<td align="right" nowrap>1818</td>
+<td align="right" nowrap>1817</td>
+</tr>
+<tr>
+<td align="right" nowrap>BEA 8.1 Windows</td>
+<td align="right" nowrap>1464</td>
+<td align="right" nowrap>1556</td>
+<td align="right" nowrap>1649</td>
+<td align="right" nowrap>1650</td>
+<td align="right" nowrap>1618</td>
+</tr>
+<tr>
+<td align="right" nowrap>Blackdown 1.3.1 Linux</td>
+<td align="right" nowrap>1620</td>
+<td align="right" nowrap>1597</td>
+<td align="right" nowrap>1630</td>
+<td align="right" nowrap>1628</td>
+<td align="right" nowrap>1618</td>
+</tr>
+<tr>
+<td align="right" nowrap>Blackdown 1.3.1 FreeBSD</td>
+<td align="right" nowrap>1266</td>
+<td align="right" nowrap>1252</td>
+<td align="right" nowrap>1251</td>
+<td align="right" nowrap>1248</td>
+<td align="right" nowrap>1250</td>
+</tr>
+<tr>
+<td align="right" nowrap>BEA 8.1 Linux</td>
+<td align="left" nowrap colspan="5">Hangs with low CPU usage (~ 6%)</td>
+</tr>
+<tr>
+<td align="right" nowrap>Blackdown 1.4.1 FreeBSD</td>
+<td align="left" nowrap colspan="5">HotSpot Virtual Machine Error</td>
+</tr>
+</table>
+<div class="caption">
+<table cellspacing="6" cellpadding="0">
+<tr>
+<td valign="top" align="left">Table 1: VolanoMark 2.5 loopback performance results (messages per second)</td>
+</tr>
+</table>
+</div>
+<a name="tab:looptable" id="tab:looptable"></a>
+<div class="center">
+<hr width="80%" size="2"></div>
+</div>
+</blockquote>
+<p>BEA JRockit 8.1 on Linux and Blackdown Java 1.4.1 on FreeBSD failed to run the tests, probably due to incompatibility with the operating system versions I chose. BEA JRockit 8.1 is supported on Red Hat Enterprise Linux AS/ES/WS 2.1 (kernel 2.4.9, glibc 2.2.4) but not on the Red Hat Linux 8.0 system I used (with kernel 2.4.18, glibc 2.3.2). BEA JRockit on Linux seems to be much more dependent on specific Linux kernel and glibc versions than the Java ports for Linux from Blackdown, IBM, and Sun. The Blackdown Java ports are written for Linux, so it is not too surprising that the Java 1.4.1 port is not yet working under the Linux binary compatibility of FreeBSD.</p>
+<p><a name="loopoptions" id="loopoptions"></a></p>
+<blockquote class="figure">
+<div class="center">
+<hr width="80%" size="2"></div>
+<dl class="description">
+<dt style="font-weight: bold" class="dt-description">BEA 3.1 Windows</dt>
+<dd class="dd-description"><kbd><span class="nobr">-Xgc:gencopy</span> <span class="nobr">-Xthinthreads</span> <span class="nobr">-Xmx64m</span></kbd></dd>
+<dt style="font-weight: bold" class="dt-description">BEA 7.0 Windows</dt>
+<dd class="dd-description"><kbd><span class="nobr">-Xgc:gencopy</span> <span class="nobr">-Xthinthreads</span> <span class="nobr">-Xmx64m</span></kbd></dd>
+<dt style="font-weight: bold" class="dt-description">BEA 8.1 Linux</dt>
+<dd class="dd-description"><kbd><span class="nobr">-Xgc:gencopy</span> <span class="nobr">-Xthinthreads</span> <span class="nobr">-Xmx64m</span></kbd></dd>
+<dt style="font-weight: bold" class="dt-description">BEA 8.1 Windows</dt>
+<dd class="dd-description"><kbd><span class="nobr">-Xgc:gencopy</span> <span class="nobr">-Xthinthreads</span> <span class="nobr">-Xmx64m</span></kbd></dd>
+<dt style="font-weight: bold" class="dt-description">Blackdown 1.3.1 FreeBSD</dt>
+<dd class="dd-description"><kbd><span class="nobr">-green</span> <span class="nobr">-Xmx64m</span></kbd></dd>
+<dt style="font-weight: bold" class="dt-description">Blackdown 1.3.1 Linux</dt>
+<dd class="dd-description"><kbd><span class="nobr">-green</span> <span class="nobr">-Xmx64m</span></kbd></dd>
+<dt style="font-weight: bold" class="dt-description">Blackdown 1.4.1 FreeBSD</dt>
+<dd class="dd-description"><kbd><span class="nobr">-server</span> <span class="nobr">-Xmx64m</span></kbd></dd>
+<dt style="font-weight: bold" class="dt-description">Blackdown 1.4.1 Linux</dt>
+<dd class="dd-description"><kbd><span class="nobr">-server</span> <span class="nobr">-Xmx64m</span></kbd></dd>
+<dt style="font-weight: bold" class="dt-description">IBM 1.3.1 Linux</dt>
+<dd class="dd-description"><kbd><span class="nobr">-Xmx64m</span></kbd></dd>
+<dt style="font-weight: bold" class="dt-description">IBM 1.3.1 Windows</dt>
+<dd class="dd-description"><kbd><span class="nobr">-Xmx64m</span></kbd></dd>
+<dt style="font-weight: bold" class="dt-description">IBM 1.4.0 Linux</dt>
+<dd class="dd-description"><kbd><span class="nobr">-Xmx64m</span></kbd></dd>
+<dt style="font-weight: bold" class="dt-description">Sun 1.3.1 Linux</dt>
+<dd class="dd-description"><kbd><span class="nobr">-server</span> <span class="nobr">-Xmx64m</span></kbd></dd>
+<dt style="font-weight: bold" class="dt-description">Sun 1.3.1 Solaris</dt>
+<dd class="dd-description"><kbd><span class="nobr">-server</span> <span class="nobr">-Xconcurrentio</span> <span class="nobr">-Xmx64m</span></kbd></dd>
+<dt style="font-weight: bold" class="dt-description">Sun 1.3.1 Windows</dt>
+<dd class="dd-description"><kbd><span class="nobr">-server</span> <span class="nobr">-Xmx64m</span></kbd></dd>
+<dt style="font-weight: bold" class="dt-description">Sun 1.4.1 Linux</dt>
+<dd class="dd-description"><kbd><span class="nobr">-server</span> <span class="nobr">-Xmx64m</span></kbd></dd>
+<dt style="font-weight: bold" class="dt-description">Sun 1.4.1 Solaris</dt>
+<dd class="dd-description"><kbd><span class="nobr">-server</span> <span class="nobr">-Xconcurrentio</span> <span class="nobr">-Xmx64m</span></kbd></dd>
+<dt style="font-weight: bold" class="dt-description">Sun 1.4.1 Windows</dt>
+<dd class="dd-description"><kbd><span class="nobr">-server</span> <span class="nobr">-Xmx64m</span></kbd></dd>
+</dl>
+<div class="caption">
+<table cellspacing="6" cellpadding="0">
+<tr>
+<td valign="top" align="left">Figure 2: Command options for the loopback performance tests</td>
+</tr>
+</table>
+</div>
+<a name="fig:loopoptions" id="fig:loopoptions"></a>
+<div class="center">
+<hr width="80%" size="2"></div>
+</blockquote>
+<h2 class="section"><a name="htoc3" id="htoc3"></a>Network Scalability</h2>
+<p>The network scalability tests were executed over a 100-Mbps Ethernet cross-over cable connection with the Java command options shown in <a href="#netoptions">Figure 4</a>. The operating systems on both sides were rebooted before each set of tests for a particular Java virtual machine. The VolanoMark server was not restarted between each run of the client benchmark at increasing connection levels.</p>
+<p><a href="#nettable1">Table 2</a> and <a href="#nettable2">Table 3</a> show the test results in detail. Each test result is the server throughput in messages per second for the corresponding number of concurrent connections, starting with 1,000 connections and increasing by 1,000 up to 10,000 connections. If the Java platform failed to run all ten tests, the error which caused the failure is shown in the last column. <a href="#netchart">Figure 3</a> shows the final score for each Java platform. The score is the maximum connection level completed without errors. Bigger numbers are better and indicate greater network scalability. The order of the Java platforms is preserved from their performance scores.</p>
+<p><a name="netchart" id="netchart"></a></p>
+<blockquote class="figure">
+<div class="center">
+<div class="center">
+<hr width="80%" size="2"></div>
+<img src="network.png" width="500" height="648" alt="[Bar chart of network scalability scores]">
+<div class="caption">
+<table cellspacing="6" cellpadding="0">
+<tr>
+<td valign="top" align="left">Figure 3: VolanoMark 2.5 network scalability scores. <a href="network.svg">View scalable image</a> (SVG).</td>
+</tr>
+</table>
+</div>
+<a name="fig:netchart" id="fig:netchart"></a>
+<div class="center">
+<hr width="80%" size="2"></div>
+</div>
+</blockquote>
+<p><a name="nettable1" id="nettable1"></a></p>
+<blockquote class="table">
+<div class="center">
+<div class="center">
+<hr width="80%" size="2"></div>
+<table cellspacing="6" cellpadding="0">
+<tr>
+<td style="font-weight: bold" align="right" nowrap>Java Platform</td>
+<td style="font-weight: bold" align="right" nowrap>1000</td>
+<td style="font-weight: bold" align="right" nowrap>2000</td>
+<td style="font-weight: bold" align="right" nowrap>3000</td>
+<td style="font-weight: bold" align="right" nowrap>4000</td>
+<td style="font-weight: bold" align="right" nowrap>5000</td>
+</tr>
+<tr>
+<td align="right" nowrap>IBM 1.3.1 Windows</td>
+<td align="right" nowrap>5473</td>
+<td align="right" nowrap>6234</td>
+<td align="right" nowrap>5132</td>
+<td align="right" nowrap> </td>
+<td align="right" nowrap> </td>
+</tr>
+<tr>
+<td align="right" nowrap>IBM 1.4.0 Linux</td>
+<td align="right" nowrap> </td>
+<td align="right" nowrap> </td>
+<td align="right" nowrap> </td>
+<td align="right" nowrap> </td>
+<td align="right" nowrap> </td>
+</tr>
+<tr>
+<td align="right" nowrap>Sun 1.3.1 Windows</td>
+<td align="right" nowrap>5263</td>
+<td align="right" nowrap>5482</td>
+<td align="right" nowrap>4282</td>
+<td align="right" nowrap> </td>
+<td align="right" nowrap> </td>
+</tr>
+<tr>
+<td align="right" nowrap>Sun 1.4.1 Windows</td>
+<td align="right" nowrap>5457</td>
+<td align="right" nowrap>5997</td>
+<td align="right" nowrap>5899</td>
+<td align="right" nowrap> </td>
+<td align="right" nowrap> </td>
+</tr>
+<tr>
+<td align="right" nowrap>BEA 3.1 Windows</td>
+<td align="right" nowrap>5939</td>
+<td align="right" nowrap>5045</td>
+<td align="right" nowrap>4568</td>
+<td align="right" nowrap>4713</td>
+<td align="right" nowrap>3993</td>
+</tr>
+<tr>
+<td align="right" nowrap>IBM 1.3.1 Linux</td>
+<td align="right" nowrap>4303</td>
+<td align="right" nowrap> </td>
+<td align="right" nowrap> </td>
+<td align="right" nowrap> </td>
+<td align="right" nowrap> </td>
+</tr>
+<tr>
+<td align="right" nowrap>Sun 1.3.1 Linux</td>
+<td align="right" nowrap> </td>
+<td align="right" nowrap> </td>
+<td align="right" nowrap> </td>
+<td align="right" nowrap> </td>
+<td align="right" nowrap> </td>
+</tr>
+<tr>
+<td align="right" nowrap>Blackdown 1.4.1 Linux</td>
+<td align="right" nowrap>4306</td>
+<td align="right" nowrap> </td>
+<td align="right" nowrap> </td>
+<td align="right" nowrap> </td>
+<td align="right" nowrap> </td>
+</tr>
+<tr>
+<td align="right" nowrap>Sun 1.4.1 Linux</td>
+<td align="right" nowrap>3099</td>
+<td align="right" nowrap> </td>
+<td align="right" nowrap> </td>
+<td align="right" nowrap> </td>
+<td align="right" nowrap> </td>
+</tr>
+<tr>
+<td align="right" nowrap>Sun 1.4.1 Solaris</td>
+<td align="right" nowrap>3452</td>
+<td align="right" nowrap>4513</td>
+<td align="right" nowrap>4364</td>
+<td align="right" nowrap>3877</td>
+<td align="right" nowrap> </td>
+</tr>
+<tr>
+<td align="right" nowrap>Sun 1.3.1 Solaris</td>
+<td align="right" nowrap>2840</td>
+<td align="right" nowrap>3344</td>
+<td align="right" nowrap>3093</td>
+<td align="right" nowrap>2899</td>
+<td align="right" nowrap> </td>
+</tr>
+<tr>
+<td align="right" nowrap>BEA 7.0 Windows</td>
+<td align="right" nowrap>3097</td>
+<td align="right" nowrap>1485</td>
+<td align="right" nowrap>1065</td>
+<td align="right" nowrap>787</td>
+<td align="right" nowrap>579</td>
+</tr>
+<tr>
+<td align="right" nowrap>BEA 8.1 Windows</td>
+<td align="right" nowrap>1311</td>
+<td align="right" nowrap>1664</td>
+<td align="right" nowrap>1064</td>
+<td align="right" nowrap>776</td>
+<td align="right" nowrap>592</td>
+</tr>
+<tr>
+<td align="right" nowrap>Blackdown 1.3.1 Linux</td>
+<td align="right" nowrap>2047</td>
+<td align="right" nowrap>1289</td>
+<td align="right" nowrap>1188</td>
+<td align="right" nowrap>668</td>
+<td align="right" nowrap>789</td>
+</tr>
+<tr>
+<td align="right" nowrap>Blackdown 1.3.1 FreeBSD</td>
+<td align="right" nowrap>1574</td>
+<td align="right" nowrap>901</td>
+<td align="right" nowrap>642</td>
+<td align="right" nowrap>556</td>
+<td align="right" nowrap>577</td>
+</tr>
+<tr>
+<td align="right" nowrap>BEA 8.1 Linux</td>
+<td align="right" nowrap> </td>
+<td align="right" nowrap> </td>
+<td align="right" nowrap> </td>
+<td align="right" nowrap> </td>
+<td align="right" nowrap> </td>
+</tr>
+<tr>
+<td align="right" nowrap>Blackdown 1.4.1 FreeBSD</td>
+<td align="right" nowrap> </td>
+<td align="right" nowrap> </td>
+<td align="right" nowrap> </td>
+<td align="right" nowrap> </td>
+<td align="right" nowrap> </td>
+</tr>
+</table>
+<div class="caption">
+<table cellspacing="6" cellpadding="0">
+<tr>
+<td valign="top" align="left">Table 2: VolanoMark 2.5 network scalability results (messages per second): 1,000–5,000 concurrent connections</td>
+</tr>
+</table>
+</div>
+<a name="tab:nettable1" id="tab:nettable1"></a>
+<div class="center">
+<hr width="80%" size="2"></div>
+</div>
+</blockquote>
+<p><a name="nettable2" id="nettable2"></a></p>
+<blockquote class="table">
+<div class="center">
+<div class="center">
+<hr width="80%" size="2"></div>
+<table cellspacing="6" cellpadding="0">
+<tr>
+<td style="font-weight: bold" align="right" nowrap>Java Platform</td>
+<td style="font-weight: bold" align="right" nowrap>6000</td>
+<td style="font-weight: bold" align="right" nowrap>7000</td>
+<td style="font-weight: bold" align="right" nowrap>8000</td>
+<td style="font-weight: bold" align="right" nowrap>9000</td>
+<td style="font-weight: bold" align="right" nowrap>10000</td>
+</tr>
+<tr>
+<td align="right" nowrap>IBM 1.3.1 Windows</td>
+<td align="right" nowrap> </td>
+<td align="right" nowrap> </td>
+<td align="right" nowrap> </td>
+<td align="right" nowrap> </td>
+<td align="right" nowrap> </td>
+</tr>
+<tr>
+<td align="right" nowrap>IBM 1.4.0 Linux</td>
+<td align="right" nowrap> </td>
+<td align="right" nowrap> </td>
+<td align="right" nowrap> </td>
+<td align="right" nowrap> </td>
+<td align="right" nowrap> </td>
+</tr>
+<tr>
+<td align="right" nowrap>Sun 1.3.1 Windows</td>
+<td align="right" nowrap> </td>
+<td align="right" nowrap> </td>
+<td align="right" nowrap> </td>
+<td align="right" nowrap> </td>
+<td align="right" nowrap> </td>
+</tr>
+<tr>
+<td align="right" nowrap>Sun 1.4.1 Windows</td>
+<td align="right" nowrap> </td>
+<td align="right" nowrap> </td>
+<td align="right" nowrap> </td>
+<td align="right" nowrap> </td>
+<td align="right" nowrap> </td>
+</tr>
+<tr>
+<td align="right" nowrap>BEA 3.1 Windows</td>
+<td align="right" nowrap>4352</td>
+<td align="right" nowrap>3428</td>
+<td align="right" nowrap>3069</td>
+<td align="right" nowrap>3646</td>
+<td align="right" nowrap>3563</td>
+</tr>
+<tr>
+<td align="right" nowrap>IBM 1.3.1 Linux</td>
+<td align="right" nowrap> </td>
+<td align="right" nowrap> </td>
+<td align="right" nowrap> </td>
+<td align="right" nowrap> </td>
+<td align="right" nowrap> </td>
+</tr>
+<tr>
+<td align="right" nowrap>Sun 1.3.1 Linux</td>
+<td align="right" nowrap> </td>
+<td align="right" nowrap> </td>
+<td align="right" nowrap> </td>
+<td align="right" nowrap> </td>
+<td align="right" nowrap> </td>
+</tr>
+<tr>
+<td align="right" nowrap>Blackdown 1.4.1 Linux</td>
+<td align="right" nowrap> </td>
+<td align="right" nowrap> </td>
+<td align="right" nowrap> </td>
+<td align="right" nowrap> </td>
+<td align="right" nowrap> </td>
+</tr>
+<tr>
+<td align="right" nowrap>Sun 1.4.1 Linux</td>
+<td align="right" nowrap> </td>
+<td align="right" nowrap> </td>
+<td align="right" nowrap> </td>
+<td align="right" nowrap> </td>
+<td align="right" nowrap> </td>
+</tr>
+<tr>
+<td align="right" nowrap>Sun 1.4.1 Solaris</td>
+<td align="right" nowrap> </td>
+<td align="right" nowrap> </td>
+<td align="right" nowrap> </td>
+<td align="right" nowrap> </td>
+<td align="right" nowrap> </td>
+</tr>
+<tr>
+<td align="right" nowrap>Sun 1.3.1 Solaris</td>
+<td align="right" nowrap> </td>
+<td align="right" nowrap> </td>
+<td align="right" nowrap> </td>
+<td align="right" nowrap> </td>
+<td align="right" nowrap> </td>
+</tr>
+<tr>
+<td align="right" nowrap>BEA 7.0 Windows</td>
+<td align="right" nowrap>469</td>
+<td align="right" nowrap>349</td>
+<td align="right" nowrap>293</td>
+<td align="right" nowrap>255</td>
+<td align="right" nowrap>224</td>
+</tr>
+<tr>
+<td align="right" nowrap>BEA 8.1 Windows</td>
+<td align="right" nowrap>460</td>
+<td align="right" nowrap>346</td>
+<td align="right" nowrap>292</td>
+<td align="right" nowrap>252</td>
+<td align="right" nowrap>223</td>
+</tr>
+<tr>
+<td align="right" nowrap>Blackdown 1.3.1 Linux</td>
+<td align="right" nowrap>513</td>
+<td align="right" nowrap>451</td>
+<td align="right" nowrap>283</td>
+<td align="right" nowrap>446</td>
+<td align="right" nowrap>246</td>
+</tr>
+<tr>
+<td align="right" nowrap>Blackdown 1.3.1 FreeBSD</td>
+<td align="right" nowrap>437</td>
+<td align="right" nowrap> </td>
+<td align="right" nowrap> </td>
+<td align="right" nowrap> </td>
+<td align="right" nowrap> </td>
+</tr>
+<tr>
+<td align="right" nowrap>BEA 8.1 Linux</td>
+<td align="right" nowrap> </td>
+<td align="right" nowrap> </td>
+<td align="right" nowrap> </td>
+<td align="right" nowrap> </td>
+<td align="right" nowrap> </td>
+</tr>
+<tr>
+<td align="right" nowrap>Blackdown 1.4.1 FreeBSD</td>
+<td align="right" nowrap> </td>
+<td align="right" nowrap> </td>
+<td align="right" nowrap> </td>
+<td align="right" nowrap> </td>
+<td align="right" nowrap> </td>
+</tr>
+</table>
+<div class="caption">
+<table cellspacing="6" cellpadding="0">
+<tr>
+<td valign="top" align="left">Table 3: VolanoMark 2.5 network scalability results (messages per second): 6,000–10,000 concurrent connections</td>
+</tr>
+</table>
+</div>
+<a name="tab:nettable2" id="tab:nettable2"></a>
+<div class="center">
+<hr width="80%" size="2"></div>
+</div>
+</blockquote>
+<p><a name="nettable3" id="nettable3"></a></p>
+<blockquote class="table">
+<div class="center">
+<div class="center">
+<hr width="80%" size="2"></div>
+<table cellspacing="6" cellpadding="0">
+<tr>
+<td style="font-weight: bold" align="right" nowrap>Java Platform</td>
+<td style="font-weight: bold" align="right" nowrap>Level</td>
+<td style="font-weight: bold" align="left" nowrap>Error</td>
+</tr>
+<tr>
+<td align="right" nowrap>IBM 1.3.1 Windows</td>
+<td align="right" nowrap>3,000</td>
+<td align="left" nowrap>OutOfMemoryError</td>
+</tr>
+<tr>
+<td align="right" nowrap>IBM 1.4.0 Linux</td>
+<td align="right" nowrap>0</td>
+<td align="left" nowrap>Segmentation fault</td>
+</tr>
+<tr>
+<td align="right" nowrap>Sun 1.3.1 Windows</td>
+<td align="right" nowrap>3,000</td>
+<td align="left" nowrap>OutOfMemoryError</td>
+</tr>
+<tr>
+<td align="right" nowrap>Sun 1.4.1 Windows</td>
+<td align="right" nowrap>3,000</td>
+<td align="left" nowrap>OutOfMemoryError</td>
+</tr>
+<tr>
+<td align="right" nowrap>BEA 3.1 Windows</td>
+<td align="right" nowrap>10,000</td>
+<td align="left" nowrap> </td>
+</tr>
+<tr>
+<td align="right" nowrap>IBM 1.3.1 Linux</td>
+<td align="right" nowrap>1,000</td>
+<td align="left" nowrap>OutOfMemoryError</td>
+</tr>
+<tr>
+<td align="right" nowrap>Sun 1.3.1 Linux</td>
+<td align="right" nowrap>0</td>
+<td align="left" nowrap>OutOfMemoryError</td>
+</tr>
+<tr>
+<td align="right" nowrap>Blackdown 1.4.1 Linux</td>
+<td align="right" nowrap>1,000</td>
+<td align="left" nowrap>Hangs (0% CPU)</td>
+</tr>
+<tr>
+<td align="right" nowrap>Sun 1.4.1 Linux</td>
+<td align="right" nowrap>1,000</td>
+<td align="left" nowrap>OutOfMemoryError</td>
+</tr>
+<tr>
+<td align="right" nowrap>Sun 1.4.1 Solaris</td>
+<td align="right" nowrap>4,000</td>
+<td align="left" nowrap>Segmentation fault</td>
+</tr>
+<tr>
+<td align="right" nowrap>Sun 1.3.1 Solaris</td>
+<td align="right" nowrap>4,000</td>
+<td align="left" nowrap>Segmentation fault</td>
+</tr>
+<tr>
+<td align="right" nowrap>BEA 7.0 Windows</td>
+<td align="right" nowrap>10,000</td>
+<td align="left" nowrap> </td>
+</tr>
+<tr>
+<td align="right" nowrap>BEA 8.1 Windows</td>
+<td align="right" nowrap>10,000</td>
+<td align="left" nowrap> </td>
+</tr>
+<tr>
+<td align="right" nowrap>Blackdown 1.3.1 Linux</td>
+<td align="right" nowrap>10,000</td>
+<td align="left" nowrap> </td>
+</tr>
+<tr>
+<td align="right" nowrap>Blackdown 1.3.1 FreeBSD</td>
+<td align="right" nowrap>6,000</td>
+<td align="left" nowrap>Hangs (0% CPU)</td>
+</tr>
+<tr>
+<td align="right" nowrap>BEA 8.1 Linux</td>
+<td align="right" nowrap>0</td>
+<td align="left" nowrap>Hangs (~ 6% CPU)</td>
+</tr>
+<tr>
+<td align="right" nowrap>Blackdown 1.4.1 FreeBSD</td>
+<td align="right" nowrap>0</td>
+<td align="left" nowrap>HotSpot VM Error</td>
+</tr>
+</table>
+<div class="caption">
+<table cellspacing="6" cellpadding="0">
+<tr>
+<td valign="top" align="left">Table 4: VolanoMark 2.5 network scalability test: highest successful level and subsequent error</td>
+</tr>
+</table>
+</div>
+<a name="tab:nettable3" id="tab:nettable3"></a>
+<div class="center">
+<hr width="80%" size="2"></div>
+</div>
+</blockquote>
+<p><a name="netoptions" id="netoptions"></a></p>
+<blockquote class="figure">
+<div class="center">
+<hr width="80%" size="2"></div>
+<dl class="description">
+<dt style="font-weight: bold" class="dt-description">BEA 3.1 Windows</dt>
+<dd class="dd-description"><kbd><span class="nobr">-Xgc:gencopy</span> <span class="nobr">-Xthinthreads</span> <span class="nobr">-Xmx256m</span> <span class="nobr">-Xss32k</span></kbd></dd>
+<dt style="font-weight: bold" class="dt-description">BEA 7.0 Windows</dt>
+<dd class="dd-description"><kbd><span class="nobr">-Xgc:gencopy</span> <span class="nobr">-Xthinthreads</span> <span class="nobr">-Xmx256m</span> <span class="nobr">-Xss32k</span></kbd></dd>
+<dt style="font-weight: bold" class="dt-description">BEA 8.1 Linux</dt>
+<dd class="dd-description"><kbd><span class="nobr">-Xgc:gencopy</span> <span class="nobr">-Xthinthreads</span> <span class="nobr">-Xmx256m</span> <span class="nobr">-Xss32k</span></kbd></dd>
+<dt style="font-weight: bold" class="dt-description">BEA 8.1 Windows</dt>
+<dd class="dd-description"><kbd><span class="nobr">-Xgc:gencopy</span> <span class="nobr">-Xthinthreads</span> <span class="nobr">-Xmx256m</span> <span class="nobr">-Xss32k</span></kbd></dd>
+<dt style="font-weight: bold" class="dt-description">Blackdown 1.3.1 FreeBSD</dt>
+<dd class="dd-description"><kbd><span class="nobr">-green</span> <span class="nobr">-Xmx256m</span> <span class="nobr">-Xss32k</span></kbd></dd>
+<dt style="font-weight: bold" class="dt-description">Blackdown 1.3.1 Linux</dt>
+<dd class="dd-description"><kbd><span class="nobr">-green</span> <span class="nobr">-Xmx256m</span> <span class="nobr">-Xss32k</span></kbd></dd>
+<dt style="font-weight: bold" class="dt-description">Blackdown 1.4.1 FreeBSD</dt>
+<dd class="dd-description"><kbd><span class="nobr">-server</span> <span class="nobr">-Xmx256m</span> <span class="nobr">-Xss96k</span></kbd></dd>
+<dt style="font-weight: bold" class="dt-description">Blackdown 1.4.1 Linux</dt>
+<dd class="dd-description"><kbd><span class="nobr">-server</span> <span class="nobr">-Xmx256m</span> <span class="nobr">-Xss96k</span></kbd></dd>
+<dt style="font-weight: bold" class="dt-description">IBM 1.3.1 Linux</dt>
+<dd class="dd-description"><kbd><span class="nobr">-Xmx256m</span> <span class="nobr">-Xss32k</span></kbd></dd>
+<dt style="font-weight: bold" class="dt-description">IBM 1.3.1 Windows</dt>
+<dd class="dd-description"><kbd><span class="nobr">-Xmx256m</span> <span class="nobr">-Xss32k</span></kbd></dd>
+<dt style="font-weight: bold" class="dt-description">IBM 1.4.0 Linux</dt>
+<dd class="dd-description"><kbd><span class="nobr">-Xmx256m</span> <span class="nobr">-Xss32k</span></kbd></dd>
+<dt style="font-weight: bold" class="dt-description">Sun 1.3.1 Linux</dt>
+<dd class="dd-description"><kbd><span class="nobr">-server</span> <span class="nobr">-Xmx256m</span> <span class="nobr">-Xss32k</span></kbd></dd>
+<dt style="font-weight: bold" class="dt-description">Sun 1.3.1 Solaris</dt>
+<dd class="dd-description"><kbd><span class="nobr">-server</span> <span class="nobr">-Xconcurrentio</span> <span class="nobr">-Xmx256m</span> <span class="nobr">-Xss64k</span></kbd></dd>
+<dt style="font-weight: bold" class="dt-description">Sun 1.3.1 Windows</dt>
+<dd class="dd-description"><kbd><span class="nobr">-server</span> <span class="nobr">-Xmx256m</span> <span class="nobr">-Xss32k</span></kbd></dd>
+<dt style="font-weight: bold" class="dt-description">Sun 1.4.1 Linux</dt>
+<dd class="dd-description"><kbd><span class="nobr">-server</span> <span class="nobr">-Xmx256m</span> <span class="nobr">-Xss96k</span></kbd></dd>
+<dt style="font-weight: bold" class="dt-description">Sun 1.4.1 Solaris</dt>
+<dd class="dd-description"><kbd><span class="nobr">-server</span> <span class="nobr">-Xconcurrentio</span> <span class="nobr">-Xmx256m</span> <span class="nobr">-Xss64k</span></kbd></dd>
+<dt style="font-weight: bold" class="dt-description">Sun 1.4.1 Windows</dt>
+<dd class="dd-description"><kbd><span class="nobr">-server</span> <span class="nobr">-Xmx256m</span> <span class="nobr">-Xss32k</span></kbd></dd>
+</dl>
+<div class="caption">
+<table cellspacing="6" cellpadding="0">
+<tr>
+<td valign="top" align="left">Figure 4: Command options for the network scalability tests</td>
+</tr>
+</table>
+</div>
+<a name="fig:netoptions" id="fig:netoptions"></a>
+<div class="center">
+<hr width="80%" size="2"></div>
+</blockquote>
+<h2 class="section"><a name="htoc4" id="htoc4"></a>Tricks</h2>
+<p>The main trick in getting these Java platforms to handle the required number of threads is to reduce the size of the thread stack with the <kbd><span class="nobr">-Xss</span></kbd> option. I generally set the stack size to 32 kilobytes when permitted by the Java virtual machine on startup. Otherwise, I set the stack size to the minimum required by the virtual machine: 64 kilobytes for the HotSpot Server VM on Solaris and 96 kilobytes for the version 1.4.1 HotSpot Server VM on Linux and FreeBSD.</p>
+<h3 class="subsection">JRockit on Windows</h3>
+<p>BEA JRockit has a unique High Performance Threading System, also called <i>Thin Threads</i>, which is enabled by the <kbd><span class="nobr">-Xthinthreads</span></kbd> option. By mapping all Java threads onto a smaller set of native threads, BEA JRockit is the only Java virtual machine that can scale past the 4,000-connection barrier of VolanoMark on Windows. BEA JRockit developers recommended that I use the <kbd><span class="nobr">-Xgc:gencopy</span></kbd> option to select the Generational Copying Garbage Collector, and my own tests have shown it to be the best choice for VolanoMark as well.</p>
+<p><a href="#beathreads">Table 5</a> shows the performance differences between the BEA native and Thin Thread implementations. With the large difference in performance between these two models in JRockit versions 7.0 and 8.1, BEA now forces you to choose between superb network scalability (with Thin Threads) and superb performance (with native threads). With JRockit 3.1, we got both at the same time. Unfortunately, JRockit 3.1 is no longer available from BEA.</p>
+<p><a name="beathreads" id="beathreads"></a></p>
+<blockquote class="table">
+<div class="center">
+<div class="center">
+<hr width="80%" size="2"></div>
+<table cellspacing="6" cellpadding="0">
+<tr>
+<td style="font-weight: bold" align="left" nowrap>Java Platform</td>
+<td style="font-weight: bold" align="left" nowrap>Threading</td>
+<td style="font-weight: bold" align="center" nowrap colspan="4">Test Results</td>
+<td style="font-weight: bold" align="right" nowrap>Score</td>
+</tr>
+<tr>
+<td align="left" nowrap>BEA 3.1 Windows</td>
+<td align="left" nowrap>Native</td>
+<td align="right" nowrap>4103</td>
+<td align="right" nowrap>4110</td>
+<td align="right" nowrap>4156</td>
+<td align="right" nowrap>4183</td>
+<td align="right" nowrap>4150</td>
+</tr>
+<tr>
+<td align="left" nowrap>BEA 3.1 Windows</td>
+<td align="left" nowrap>Thin</td>
+<td align="right" nowrap>4088</td>
+<td align="right" nowrap>4102</td>
+<td align="right" nowrap>4171</td>
+<td align="right" nowrap>4177</td>
+<td align="right" nowrap>4150</td>
+</tr>
+<tr>
+<td align="left" nowrap>BEA 7.0 Windows</td>
+<td align="left" nowrap>Native</td>
+<td align="right" nowrap>3799</td>
+<td align="right" nowrap>3791</td>
+<td align="right" nowrap>3790</td>
+<td align="right" nowrap>3797</td>
+<td align="right" nowrap>3793</td>
+</tr>
+<tr>
+<td align="left" nowrap>BEA 7.0 Windows</td>
+<td align="left" nowrap>Thin</td>
+<td align="right" nowrap>1820</td>
+<td align="right" nowrap>1817</td>
+<td align="right" nowrap>1815</td>
+<td align="right" nowrap>1818</td>
+<td align="right" nowrap>1817</td>
+</tr>
+<tr>
+<td align="left" nowrap>BEA 8.1 Windows</td>
+<td align="left" nowrap>Native</td>
+<td align="right" nowrap>3791</td>
+<td align="right" nowrap>3786</td>
+<td align="right" nowrap>3794</td>
+<td align="right" nowrap>3777</td>
+<td align="right" nowrap>3786</td>
+</tr>
+<tr>
+<td align="left" nowrap>BEA 8.1 Windows</td>
+<td align="left" nowrap>Thin</td>
+<td align="right" nowrap>1464</td>
+<td align="right" nowrap>1556</td>
+<td align="right" nowrap>1649</td>
+<td align="right" nowrap>1650</td>
+<td align="right" nowrap>1618</td>
+</tr>
+</table>
+<div class="caption">
+<table cellspacing="6" cellpadding="0">
+<tr>
+<td valign="top" align="left">Table 5: Performance comparison of JRockit threading options (messages per second)</td>
+</tr>
+</table>
+</div>
+<a name="tab:beathreads" id="tab:beathreads"></a>
+<div class="center">
+<hr width="80%" size="2"></div>
+</div>
+</blockquote>
+<h3 class="subsection">HotSpot on Solaris</h3>
+<p>Server-side Java on Solaris has never quite been the same since Sun switched from the ExactVM in Java version 1.2.2 on Solaris to the HotSpot VM in Java version 1.3 and later. Yet there are some tricks for the HotSpot VM that can help make up the difference. You can find important information and excellent suggestions at the Sun Web site, <a href="http://java.sun.com/docs/hotspot/index.html">Performance Documentation for the Java HotSpot VM.</a> In particular, the Solaris HotSpot VM has an option called <kbd><span class="nobr">-Xconcurrentio</span></kbd>. It apparently does two things: it enables lightweight process-based (LWP-based) synchronization rather than the Solaris thread-based synchronization, and it disables thread-local allocation buffers (TLABs). LWP-based synchronization is the default in the Java 1.4 HotSpot VM, but must be enabled for the Java 1.3 HotSpot VM. Thread-local allocation buffers are enabled by default only in the Solaris SPARC Edition of the HotSpot Server VM. Note that all tests for this report were performed on the Intel Edition of Solaris.</p>
+<p><a href="#sunthreads">Table 6</a> shows the performance differences of the Solaris HotSpot Server VM running with its default threading and synchronization options, using the alternative one-to-one thread library found in <tt>/usr/lib/lwp</tt>, and specifying the <kbd><span class="nobr">-Xconcurrentio</span></kbd> option. The performance results of the Sun version 1.2.2_12 ExactVM on Solaris (native threads, sunwjit) are also included for comparison. The <kbd><span class="nobr">-Xconcurrentio</span></kbd> option gives a big performance boost for VolanoMark, with little or no reduction in the network scalability. All combinations of the HotSpot Server VM on Solaris managed to complete the network tests up to 4,000 concurrent connections without errors, while the Sun 1.3.1 Solaris virtual machine with its default threading options completed the tests up to 6,000 concurrent connections.</p>
+<p><a name="sunthreads" id="sunthreads"></a></p>
+<blockquote class="table">
+<div class="center">
+<div class="center">
+<hr width="80%" size="2"></div>
+<table cellspacing="6" cellpadding="0">
+<tr>
+<td style="font-weight: bold" align="left" nowrap>Java Platform</td>
+<td style="font-weight: bold" align="left" nowrap>Threading</td>
+<td style="font-weight: bold" align="center" nowrap colspan="4">Test Results</td>
+<td style="font-weight: bold" align="right" nowrap>Score</td>
+</tr>
+<tr>
+<td align="left" nowrap>Sun 1.2.2 Solaris</td>
+<td align="left" nowrap>Default</td>
+<td align="right" nowrap>3215</td>
+<td align="right" nowrap>3171</td>
+<td align="right" nowrap>3175</td>
+<td align="right" nowrap>3142</td>
+<td align="right" nowrap>3163</td>
+</tr>
+<tr>
+<td align="left" nowrap>Sun 1.3.1 Solaris</td>
+<td align="left" nowrap>Default</td>
+<td align="right" nowrap>1779</td>
+<td align="right" nowrap>1799</td>
+<td align="right" nowrap>1882</td>
+<td align="right" nowrap>1786</td>
+<td align="right" nowrap>1822</td>
+</tr>
+<tr>
+<td align="left" nowrap>Sun 1.3.1 Solaris</td>
+<td align="left" nowrap>/usr/lib/lwp</td>
+<td align="right" nowrap>2132</td>
+<td align="right" nowrap>2123</td>
+<td align="right" nowrap>2158</td>
+<td align="right" nowrap>2135</td>
+<td align="right" nowrap>2139</td>
+</tr>
+<tr>
+<td align="left" nowrap>Sun 1.3.1 Solaris</td>
+<td align="left" nowrap><span class="nobr">-Xconcurrentio</span></td>
+<td align="right" nowrap>2595</td>
+<td align="right" nowrap>2665</td>
+<td align="right" nowrap>2699</td>
+<td align="right" nowrap>2697</td>
+<td align="right" nowrap>2687</td>
+</tr>
+<tr>
+<td align="left" nowrap>Sun 1.4.1 Solaris</td>
+<td align="left" nowrap>Default</td>
+<td align="right" nowrap>2619</td>
+<td align="right" nowrap>2797</td>
+<td align="right" nowrap>2799</td>
+<td align="right" nowrap>2817</td>
+<td align="right" nowrap>2804</td>
+</tr>
+<tr>
+<td align="left" nowrap>Sun 1.4.1 Solaris</td>
+<td align="left" nowrap>/usr/lib/lwp</td>
+<td align="right" nowrap>2688</td>
+<td align="right" nowrap>2751</td>
+<td align="right" nowrap>2812</td>
+<td align="right" nowrap>2807</td>
+<td align="right" nowrap>2790</td>
+</tr>
+<tr>
+<td align="left" nowrap>Sun 1.4.1 Solaris</td>
+<td align="left" nowrap><span class="nobr">-Xconcurrentio</span></td>
+<td align="right" nowrap>2835</td>
+<td align="right" nowrap>2937</td>
+<td align="right" nowrap>2947</td>
+<td align="right" nowrap>2963</td>
+<td align="right" nowrap>2949</td>
+</tr>
+</table>
+<div class="caption">
+<table cellspacing="6" cellpadding="0">
+<tr>
+<td valign="top" align="left">Table 6: Performance comparison of Solaris threading options (messages per second)</td>
+</tr>
+</table>
+</div>
+<a name="tab:sunthreads" id="tab:sunthreads"></a>
+<div class="center">
+<hr width="80%" size="2"></div>
+</div>
+</blockquote>
+<h2 class="section"><a name="htoc5" id="htoc5"></a>Conclusions</h2>
+<p>When choosing the best Java platform for network servers similar to VolanoMark (and VolanoChat), you can ignore the performance scores. All of the Java platforms which complete the performance test are fast enough to support high-traffic Web sites on recent hardware, such as a 500 MHz Intel Pentium III with 256 megabytes of memory. What matters most is the connection capacity.</p>
+<p>At 10,000 connections, BEA JRockit 3.1 on Windows has 14 times the throughput of any other Java platform—by far, the best network scalability I have ever tested. While other Java vendors waited for better threading support in the operating system or new programming interfaces for the application, the JRockit team solved the Java threads problem right where it originated. The results are remarkable, and BEA made a wise purchase.</p>
+<p>BEA JRockit 3.1 is no longer available, so the best Java platform today is Blackdown 1.3.1 on Linux. The Blackdown 1.3.1 port scales easily to 10,000 connections, keeping pace with the latest from BEA even without a just-in-time compiler. For years, the Blackdown Project has taken the Sun Java source code and made it better. They provide fixes to bugs that Sun <a href="http://developer.java.sun.com/developer/bugParade/bugs/4427986.html">won’t fix;</a> they provide security updates to known <a href="http://www.volano.com/security/volano-2001-1.html">vulnerabilities</a> months before the official updates from Sun; and real people provide assistance on a lively mailing list. Finding that level of support from other Java vendors is difficult, even when you’re paying for it. The volunteers at Blackdown are a great asset to the Java community.</p>
+<p>The good news is that Dan Kegel’s <a href="http://www.kegel.com/c10k.html">C10K Problem</a> has been solved in Java 1.3, even when using the original blocking Java input and output methods, and even when using modest hardware. The bad news is that the Java vendors seem to have abandoned that achievement in Java 1.4. Blackdown 1.4.1 no longer offers the <kbd><span class="nobr">-green</span></kbd> Classic VM option that allows so many connections with the 1.3.1 release. The BEA High Performance Threading System (Thin Threads) is no longer so highly performing in JRockit versions 7.0 and 8.1 compared to the earlier 3.1 release. Tower Technology, with its fast and scalable TowerJ product, simply went out of business. However, there is still cause for hope. The <i>new I/O</i> model in Java 1.4 allows some server applications to reduce their thread count to single digits; the <a href="http://people.redhat.com/drepper/nptl-design.pdf">Native POSIX Thread Library</a> in Red Hat Linux 9 promises to solve the problems of highly-threaded Java applications on Linux once and for all; and of course, increases in hardware performance have made some of these problems simply evaporate. With these changes in hand, Java developers can start making headway in the C100K Problem.</p>
+<h2 class="section"><a name="htoc6" id="htoc6"></a>Hardware</h2>
+<p>The server machine under test is a Dell OptiPlex GX1p with a 500 MHz Intel Pentium III processor, 512 kilobytes of L2 cache, 384 megabytes of 100 MHz ECC SDRAM, a 3Com EtherLink 10/100 PCI TX NIC (3C905B-TX), and Phoenix ROM BIOS PLUS Version 1.10 A08.</p>
+<p>The client side driving the network scalability tests is a Dell OptiPlex GX110 with a 1 GHz Intel Pentium III processor, 256 kilobytes of full-speed L2 cache, 512 megabytes of 100 MHz non-ECC SDRAM, a 3Com EtherLink 10/100 PCI TX NIC (3C905B-TX), and Dell Computer Corporation BIOS A05, 9/18/2000. The client test driver was executed under Microsoft Windows XP Professional Version 5.1.2600 Service Pack 1 Build 2600 running BEA WebLogic JRockit Virtual Machine Build 3.1.5-CROSIS-20020617-1325 with Thin Threads and the Generational Copying Garbage Collector.</p>
+<p>Note that the client side must run on a much more powerful system than the server side because it simulates up to 10,000 clients on just one machine and must saturate the server side’s CPU usage.</p>
+<h2 class="section"><a name="htoc7" id="htoc7"></a>Operating Systems</h2>
+<h3 class="subsection">FreeBSD 4.6-RELEASE</h3>
+<p>FreeBSD 4.6-RELEASE with Linux binary compatibility:</p>
+<pre>
+FreeBSD gx1p.test.volano.com 4.6-RELEASE FreeBSD 4.6-RELEASE #0:
+<span class="unicode">↪</span> Tue Jun 11 06:14:12 GMT 2002 murray@builder.freebsdmall.com:
+<span class="unicode">↪</span> /usr/src/sys/compile/GENERIC  i386
+</pre>
+<p>Contents of <tt>/etc/sysctl.conf</tt>:</p>
+<pre class="verbatim">
+# Increase file descriptor limits from their default of 5479.
+kern.maxfiles=15360
+kern.maxfilesperproc=10240
+</pre>
+<p>Installed the <kbd>linux_base-7.1_2</kbd> port with an emulated Linux roughly equal to Red Hat Linux 7.1 (kernel 2.4.2, glibc 2.2.2):</p>
+<pre>
+Linux gx1p.test.volano.com 2.4.2 FreeBSD 4.6-RELEASE #0:
+<span class="unicode">↪</span> Tue Jun 11 06:14:12 GMT 2002 murray@ i386 unknown
+glibc-2.2.2-10
+</pre>
+<h3 class="subsection">Microsoft Windows 2000 Advanced Server</h3>
+<p>Microsoft Windows 2000 Advanced Server with Service Pack 3:</p>
+<pre class="verbatim">
+Microsoft Windows 2000 Advanced Server
+Version 5.0.2195 Service Pack 3 Build 2195
+</pre>
+<p>Optimized the performance for background services (rather than applications) under Start, Settings, Control Panel, System, Advanced, Performance Options, Application response. This change specifies that all programs receive equal amounts of processor resources.</p>
+<p>Added the following <samp>HKEY_LOCAL_MACHINE</samp> registry keys under:</p>
+<pre class="verbatim">
+SYSTEM \ CurrentControlSet \ Services \ Tcpip \ Parameters
+</pre>
+<div class="flushleft">
+<table cellspacing="6" cellpadding="0">
+<tr>
+<td style="font-weight: bold" align="left" nowrap>Name</td>
+<td style="font-weight: bold" align="left" nowrap>Type</td>
+<td style="font-weight: bold" align="right" nowrap>Default</td>
+<td style="font-weight: bold" align="right" nowrap>New Value</td>
+</tr>
+<tr>
+<td align="left" nowrap>MaxUserPort</td>
+<td align="left" nowrap>REG_DWORD</td>
+<td align="right" nowrap>5,000</td>
+<td align="right" nowrap>65,534</td>
+</tr>
+<tr>
+<td align="left" nowrap>TcpMaxDataRetransmissions</td>
+<td align="left" nowrap>REG_DWORD</td>
+<td align="right" nowrap>5</td>
+<td align="right" nowrap>32</td>
+</tr>
+</table>
+</div>
+<p>where:</p>
+<dl class="description">
+<dt style="font-weight: bold" class="dt-description">MaxUserPort</dt>
+<dd class="dd-description">determines the highest port number TCP can assign when an application requests an available user port from the system. Typically, ephemeral ports (those used briefly) are allocated to port numbers 1024 through 5000.</dd>
+<dt style="font-weight: bold" class="dt-description">TcpMaxDataRetransmissions</dt>
+<dd class="dd-description">determines how many times TCP retransmits an unacknowledged data segment on an existing connection. TCP retransmits data segments until they are acknowledged or until this value expires.</dd>
+</dl>
+<h3 class="subsection">Red Hat Linux 8.0</h3>
+<p>Red Hat Linux 8.0 (kernel 2.4.18, glibc 2.3.2) with all updates from the Red Hat Network:</p>
+<pre>
+Linux gx1p.seattle.volano.com 2.4.18-27.8.0 #1
+<span class="unicode">↪</span> Fri Mar 14 06:45:49 EST 2003 i686 i686 i386 GNU/Linux
+kernel-2.4.18-27.8.0
+glibc-2.3.2-4.80.6
+</pre>
+<p>Added to <tt>/etc/pam.d/login</tt>:</p>
+<pre class="verbatim">
+session    required     /lib/security/pam_limits.so
+</pre>
+<p>Added to <tt>/etc/security/limits.conf</tt>:</p>
+<pre class="verbatim">
+*               soft    nofile          1024
+*               hard    nofile          10240
+</pre>
+<h3 class="subsection">Sun Solaris 8</h3>
+<p>Sun Solaris 8 with all recommended Solaris and J2SE (Java 2 Platform, Standard Edition) Patch Clusters:</p>
+<pre>
+SunOS gx1p 5.8 Generic_108529-19 i86pc i386 i86pc
+</pre>
+<p>Added to <tt>/etc/system</tt>:</p>
+<pre class="verbatim">
+set rlim_fd_max = 10240
+set rlim_fd_cur = 1024
+</pre>
+<h2 class="section"><a name="htoc8" id="htoc8"></a>Java Virtual Machines</h2>
+<h3 class="subsection">BEA 3.1 Windows</h3>
+<p>For Microsoft Windows 2000.</p>
+<pre>
+java version 1.3
+Java(TM) 2 Runtime Environment, Standard Edition
+<span class="unicode">↪</span> (build "1.3.1_CROSIS-20020620-1430")
+BEA WebLogic JRockit Virtual Machine 
+<span class="unicode">↪</span> (build 3.1.5-CROSIS-20020617-1325)
+</pre>
+<h3 class="subsection">BEA 7.0 Linux</h3>
+<p>For Red Hat Linux Advanced Server 2.1 (kernel 2.4.9, glibc 2.2.4).</p>
+<pre class="verbatim">
+ERROR: The pthread library is unknown. Are you running a supported
+Linux distribution?
+</pre>
+<h3 class="subsection">BEA 7.0 Windows</h3>
+<p>For Microsoft Windows 2000 with Service Pack 2.</p>
+<pre>
+java version "1.3.1_06"
+Java(TM) 2 Runtime Environment, Standard Edition (build 1.3.1_06)
+BEA WebLogic JRockit(R) Virtual Machine
+<span class="unicode">↪</span> (build 7.0sp2-1.3.1_06-win32-GARAK-20030130-0938,
+<span class="unicode">↪</span> Thin Threads, Generational Copying Garbage Collector)
+</pre>
+<h3 class="subsection">BEA 8.1 Linux</h3>
+<p>For Red Hat Enterprise Linux AS/ES/WS 2.1 (kernel 2.4.9, glibc 2.2.4).</p>
+<pre>
+java version "1.4.1_02"
+Java(TM) 2 Runtime Environment, Standard Edition (build 1.4.1_02)
+BEA WebLogic JRockit(R) Virtual Machine
+<span class="unicode">↪</span> (build 8.1-1.4.1_02-linux32-borg.appeal.se-20030320-1059,
+<span class="unicode">↪</span> Thin Threads, Generational Copying Garbage Collector)
+</pre>
+<h3 class="subsection">BEA 8.1 Windows</h3>
+<p>For Microsoft Windows 2000 with Service Pack 2 or higher.</p>
+<pre>
+java version "1.4.1_02"
+Java(TM) 2 Runtime Environment, Standard Edition (build 1.4.1_02)
+BEA WebLogic JRockit(R) Virtual Machine
+<span class="unicode">↪</span> (build 8.1-1.4.1_02-win32-CROSIS-20030320-1110,
+<span class="unicode">↪</span> Thin Threads, Generational Copying Garbage Collector)
+</pre>
+<h3 class="subsection">Blackdown 1.3.1 FreeBSD</h3>
+<p>For systems running Linux kernel version 2.2.16 or newer and glibc version 2.1.3 or newer.</p>
+<pre>
+java version "1.3.1"
+Java(TM) 2 Runtime Environment, Standard Edition
+<span class="unicode">↪</span> (build Blackdown-1.3.1-02b-FCS)
+Classic VM (build Blackdown-1.3.1-02b-FCS, green threads, nojit)
+</pre>
+<p>Modified <tt>/usr/local/j2sdk1.3.1/bin/.java_wrapper</tt> by changing <code>expr</code> in the following two lines:</p>
+<pre class="verbatim">
+    link=`expr "${ls}" : '.*-&gt; \(.*\)$'`
+    if expr "${link}" : '/' &gt; /dev/null; then
+</pre>
+<p>to the Linux-compatible version, <tt>/usr/compat/linux/usr/bin/expr</tt>.</p>
+<h3 class="subsection">Blackdown 1.3.1 Linux</h3>
+<p>For systems running Linux kernel version 2.2.16 or newer and glibc version 2.1.3 or newer.</p>
+<pre>
+java version "1.3.1"
+Java(TM) 2 Runtime Environment, Standard Edition
+<span class="unicode">↪</span> (build Blackdown-1.3.1-02b-FCS)
+Classic VM (build Blackdown-1.3.1-02b-FCS, green threads, nojit)
+</pre>
+<h3 class="subsection">Blackdown 1.4.1 FreeBSD</h3>
+<p>For Linux kernel version 2.4.18 or newer and glibc version 2.2.5 or newer.</p>
+<pre class="verbatim">
+Java HotSpot(TM) Server VM warning: Cannot read /proc/self/stat.
+#
+# HotSpot Virtual Machine Error, Internal Error
+# Please report this error at
+# http://www.blackdown.org/cgi-bin/jdk
+#
+# Java VM: Java HotSpot(TM) Server VM (Blackdown-1.4.1-01 mixed mode)
+#
+# Error ID: 4F533F4C494E55580E4350500334
+#
+Abort trap - core dumped
+</pre>
+<h3 class="subsection">Blackdown 1.4.1 Linux</h3>
+<p>For Linux kernel version 2.4.18 or newer and glibc version 2.2.5 or newer.</p>
+<pre>
+java version "1.4.1"
+Java(TM) 2 Runtime Environment, Standard Edition
+<span class="unicode">↪</span> (build Blackdown-1.4.1-01)
+Java HotSpot(TM) Server VM (build Blackdown-1.4.1-01, mixed mode)
+</pre>
+<h3 class="subsection">IBM 1.3.1 Linux</h3>
+<p>For Red Hat Linux 7.1, 7.2, 7.3, 8.0, and Red Hat Linux Advanced Server.</p>
+<pre>
+java version "1.3.1"
+Java(TM) 2 Runtime Environment, Standard Edition (build 1.3.1)
+Classic VM (build 1.3.1, J2RE 1.3.1 IBM build cxia32131-20021102
+<span class="unicode">↪</span> (JIT enabled: jitc))
+</pre>
+<h3 class="subsection">IBM 1.3.1 Windows</h3>
+<p>For Microsoft Windows 2000 Professional with Service Pack 2 or higher, and Windows XP Professional.</p>
+<pre>
+java version "1.3.1"
+Java(TM) 2 Runtime Environment, Standard Edition (build 1.3.1)
+Classic VM (build 1.3.1, J2RE 1.3.1 IBM Windows 32 build
+<span class="unicode">↪</span> cn131-20021107 (JIT enabled: jitc))
+</pre>
+<h3 class="subsection">IBM 1.4.0 Linux</h3>
+<p>For Red Hat Linux 7.3 and Red Hat Linux Advanced Server.</p>
+<pre>
+java version "1.4.0"
+Java(TM) 2 Runtime Environment, Standard Edition (build 1.4.0)
+Classic VM (build 1.4.0, J2RE 1.4.0 IBM build cxia32140-20020917a
+<span class="unicode">↪</span> (JIT enabled: jitc))
+</pre>
+<h3 class="subsection">Sun 1.3.1 Linux</h3>
+<p>For Linux kernel version 2.2.12 and glibc version 2.1.2-11 or later, with specific support for Red Hat Linux 6.2. Also tested on Red Hat Linux 6.1 and 7.1.</p>
+<pre>
+java version "1.3.1_07"
+Java(TM) 2 Runtime Environment, Standard Edition (build 1.3.1_07-b02)
+Java HotSpot(TM) Server VM (build 1.3.1_07-b02, mixed mode)
+</pre>
+<h3 class="subsection">Sun 1.3.1 Solaris</h3>
+<p>For Solaris 2.6, Solaris 7, Solaris 8, and Solaris 9 Operating Environments with the full set of required patches.</p>
+<pre>
+java version "1.3.1_07"
+Java(TM) 2 Runtime Environment, Standard Edition (build 1.3.1_07-b02)
+Java HotSpot(TM) Server VM (build 1.3.1_07-b02, mixed mode)
+</pre>
+<h3 class="subsection">Sun 1.3.1 Windows</h3>
+<p>For Microsoft Windows 95, 98 (1st or 2nd edition), NT 4.0 with Service Pack 5, ME, 2000 Professional, 2000 Server, 2000 Advanced Server, and XP operating systems.</p>
+<pre>
+java version "1.3.1_07"
+Java(TM) 2 Runtime Environment, Standard Edition (build 1.3.1_07-b02)
+Java HotSpot(TM) Server VM (build 1.3.1_07-b02, mixed mode)
+</pre>
+<h3 class="subsection">Sun 1.4.1 Linux</h3>
+<p>For Linux kernel version 2.2.12 and glibc version 2.1.2-11 or later. Also tested on Red Hat Linux 7.2 (kernel 2.4.9-31) and Red Hat Linux 7.3 (kernel 2.4.18, glibc 2.2.5).</p>
+<pre>
+java version "1.4.1_02"
+Java(TM) 2 Runtime Environment, Standard Edition (build 1.4.1_02-b06)
+Java HotSpot(TM) Server VM (build 1.4.1_02-b06, mixed mode)
+</pre>
+<h3 class="subsection">Sun 1.4.1 Solaris</h3>
+<p>For Solaris 7, Solaris 8, and Solaris 9 Operating Environments with the full set of required patches.</p>
+<pre>
+java version "1.4.1_02"
+Java(TM) 2 Runtime Environment, Standard Edition (build 1.4.1_02-b06)
+Java HotSpot(TM) Server VM (build 1.4.1_02-b06, mixed mode)
+</pre>
+<h3 class="subsection">Sun 1.4.1 Windows</h3>
+<p>For Microsoft Windows 98 (1st or 2nd edition), NT 4.0 (with Service Pack 5 or later), ME, XP, and 2000 (with Service Pack 2 or later).</p>
+<pre>
+java version "1.4.1_02"
+Java(TM) 2 Runtime Environment, Standard Edition (build 1.4.1_02-b06)
+Java HotSpot(TM) Server VM (build 1.4.1_02-b06, mixed mode)
+</pre>
+<h2 class="section"><a name="htoc9" id="htoc9"></a>Revisions</h2>
+<dl class="description">
+<dt style="font-weight: bold" class="dt-description">May 30, 2003</dt>
+<dd class="dd-description">First published.</dd>
+<dt style="font-weight: bold" class="dt-description">June 2, 2003</dt>
+<dd class="dd-description">Corrected the system requirements for Blackdown 1.4.1 on Linux and FreeBSD.</dd>
+</dl>
+<h2 class="section"><a name="htoc10" id="htoc10"></a>Notices</h2>
+<p>Copyright © 2003 John Neffenger. <span style="font-variant:small-caps">VOLANO</span> is a trademark of Volano Software registered in the United States and Canada. <span style="font-variant:small-caps">JAVA</span> is a trademark or registered trademark of Sun Microsystems, Inc., in the United States and other countries. John Neffenger is independent of Sun Microsystems, Inc.</p>
+<p>Save as <a href="../../media/volano-report-2003-05-30.us.pdf">US Letter</a> (PDF), <a href="../../media/volano-report-2003-05-30.a4.pdf">A4 Paper</a> (PDF), <a href="../../media/volano-report-2003-05-30.a5.pdf">E-book</a> (PDF), <a href="../../media/volano-report-2003-05-30.utf8.txt">E-text</a> (UTF-8).</p>
+</body>
+</html>

@@ -1,0 +1,6 @@
+target=Mark
+root=COM.volano.Mark
+b-jdk=2
+b-heap-min=8388608
+b-heap-max=268435456
+nofeedback=true

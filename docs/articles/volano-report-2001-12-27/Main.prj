@@ -1,0 +1,5 @@
+% Build with "jc =p =a Main.prj".
+-heaplimit=67108864
+-stacklimit=32768
+-main=COM/volano/Main
+!module COM/volano/Main

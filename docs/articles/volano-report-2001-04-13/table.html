@@ -1,0 +1,62 @@
+<table width="100%" border="1" cellpadding="3">
+<tr>
+<th>Java Platform</th>
+<th>Reason for failure</th>
+</tr>
+<tr>
+<td nowrap>IBM 1.3.0 Windows</td>
+<td>java.lang.OutOfMemoryError after 3294 connections (from 256KB per-thread stack reserve)</td>
+</tr>
+<tr>
+<td nowrap>IBM 1.3.0 Linux</td>
+<td>java.lang.OutOfMemoryError after 436 connections (Linux task limit)</td>
+</tr>
+<tr>
+<td nowrap>Microsoft 1.1.4 Windows</td>
+<td>java.lang.OutOfMemoryError after 3776 connections (from 256KB per-thread stack reserve)</td>
+</tr>
+<tr>
+<td nowrap>Appeal JRockit 2.0.5 Windows</td>
+<td>No errors.</td>
+</tr>
+<tr>
+<td nowrap>Appeal JRockit 2.0.4 Linux</td>
+<td>Hangs with no CPU usage after 2610 connections (<b>bug</b>)</td>
+</tr>
+<tr>
+<td nowrap>Sun 1.3.0 Windows (HotSpot Server VM)</td>
+<td>java.lang.OutOfMemoryError after 3273 connections (from 256KB per-thread stack reserve)</td>
+</tr>
+<tr>
+<td nowrap>Sun 1.3.0 Linux (HotSpot Server VM)</td>
+<td>java.lang.OutOfMemoryError after 422 connections (Linux task limit)</td>
+</tr>
+<tr>
+<td nowrap>Sun 1.2.2 Solaris (Exact VM)</td>
+<td>Dumps core after 4060 connections (<b>bug</b>)</td>
+</tr>
+<tr>
+<td nowrap>Blackdown 1.3.0 Linux (green threads, OpenJIT)</td>
+<td>No errors.</td>
+</tr>
+<tr>
+<td nowrap>Sun 1.3.0 Solaris (HotSpot Server VM)</td>
+<td>Clients time out with heavy paging on server side (from 320MB RAM limit)</td>
+</tr>
+<tr>
+<td nowrap>Blackdown 1.3.0 FreeBSD (green threads, OpenJIT)</td>
+<td>Hangs with no CPU usage after 983 connections (<b>bug</b>)</td>
+</tr>
+<tr>
+<td nowrap>Blackdown 1.3.0 Linux (green threads, nojit)</td>
+<td>No errors.</td>
+</tr>
+<tr>
+<td nowrap>Sun 1.3.0 Linux (green threads, nojit)</td>
+<td>
+Hard run with 100% CPU usage after 1015 connections
+(<b>bug</b> with
+<a href="http://developer.java.sun.com/developer/bugParade/bugs/4427986.html">
+Bug ID 4427986</a> marked as "Closed, will not be fixed")
+</td>
+</table>
